@@ -1,0 +1,27 @@
+@startuml
+actor Client
+Client -> GameController : GET /api/v1/games/{id}\ngetGame(id: Long)
+activate GameController
+GameController -> GameService : getGame(id: Long)
+activate GameService
+GameService -> GameRepository : findById(id: Long)
+activate GameRepository
+GameRepository --> GameService : Optional<Game>
+deactivate GameRepository
+
+alt found
+  GameService -> TeamRepository : findById(game.homeTeamId)
+  TeamRepository --> GameService : Optional<Team>
+  GameService -> TeamRepository : findById(game.awayTeamId)
+  TeamRepository --> GameService : Optional<Team>
+  GameService --> GameController : GameDto
+  deactivate GameService
+  GameController --> Client : 200 OK + JSON(GameDto)
+  deactivate GameController
+else not found
+  GameService --> GameController : throws NotFound
+  deactivate GameService
+  GameController --> Client : 404 GAME_NOT_FOUND
+  deactivate GameController
+end
+@enduml
