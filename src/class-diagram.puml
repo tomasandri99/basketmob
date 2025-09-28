@@ -1,14 +1,10 @@
-# BasketMob — PlantUML Diagrams (A2 Contracts)
----
-
-## Class Diagram (contracts locked)
-
-```plantuml
 @startuml
+title BasketMob — UML Class Diagram (A2)
+
 hide circle
 skinparam classAttributeIconSize 0
 
-' === Entities ===
+' ===== Entities =====
 class User {
   +Long id
   +String email
@@ -17,6 +13,7 @@ class User {
   +LocalDateTime createdAt
   +LocalDateTime updatedAt
 }
+
 class Team {
   +Long id
   +String name
@@ -24,11 +21,13 @@ class Team {
   +String logoUrl
   +String city
 }
+
 class League {
   +Long id
   +String name
   +String season
 }
+
 class Game {
   +Long id
   +OffsetDateTime tipoff
@@ -37,6 +36,7 @@ class Game {
   +Integer awayScore
   +LocalDateTime lastUpdated
 }
+
 class Standing {
   +Long id
   +String season
@@ -46,58 +46,89 @@ class Standing {
   +Integer pointsFor
   +Integer pointsAgainst
 }
+
 class Favorite {
   +Long id
   +LocalDateTime createdAt
 }
 
-' === DTOs ===
-class GameDto
-class GameListItemDto
-class TeamDto
-class UserProfileDto
+' ===== DTOs =====
+class TeamDto {
+  +Long id
+  +String name
+}
+class GameDto {
+  +Long id
+  +String status
+  +String tipoff
+  +TeamDto home
+  +TeamDto away
+  +Integer homeScore
+  +Integer awayScore
+}
+class GameListItemDto {
+  +Long id
+  +String tipoff
+  +String status
+  +String homeName
+  +String awayName
+}
+class UserProfileDto {
+  +Long id
+  +String email
+  +String username
+}
+class SessionToken {
+  +String token
+  +Instant expiresAt
+}
 
-' === Repositories ===
-interface UserRepository
-interface TeamRepository
+' ===== Repositories =====
+interface UserRepository {
+  +findByEmail(email: String) : Optional<User>
+}
+interface TeamRepository {
+  +findById(id: Long) : Optional<Team>
+}
 interface LeagueRepository
-interface GameRepository
-interface StandingRepository
-interface FavoriteRepository
+interface GameRepository {
+  +findById(id: Long) : Optional<Game>
+  +findByDate(date: LocalDate, page: int, size: int, sort: String) : Page<Game>
+  +save(game: Game) : Game
+}
+interface StandingRepository {
+  +findByLeagueAndSeason(leagueId: Long, season: String) : List<Standing>
+}
+interface FavoriteRepository {
+  +findByUserId(userId: Long) : List<Favorite>
+  +findByUserIdAndTeamId(userId: Long, teamId: Long) : Optional<Favorite>
+}
 
-UserRepository : +findByEmail(String): Optional<User>
-TeamRepository : +findById(Long): Optional<Team>
-GameRepository : +findById(Long): Optional<Game>
-GameRepository : +findByDate(LocalDate,int,int,String): Page<Game>
-GameRepository : +save(Game): Game
-StandingRepository : +findByLeagueAndSeason(Long,String): List<Standing>
-FavoriteRepository : +findByUserId(Long): List<Favorite>
-
-' === Services ===
+' ===== Services =====
 class AuthService {
-  +register(email,username,password): User
-  +login(email,password): SessionToken
+  +register(email: String, username: String, password: String) : User
+  +login(email: String, password: String) : SessionToken
 }
 class UserService {
-  +getProfile(userId): UserProfileDto
-  +updateUser(userId, dto): UserProfileDto
-  +deleteUser(userId): void
+  +getProfile(userId: Long) : UserProfileDto
+  +updateUser(userId: Long, dto: UserProfileDto) : UserProfileDto
+  +deleteUser(userId: Long) : void
 }
 interface GameService {
-  +getGame(id: Long): GameDto
-  +listByDate(date: LocalDate, page: int, size: int, sort: String): Page<GameListItemDto>
+  +getGame(id: Long) : GameDto
+  +listByDate(date: LocalDate, page: int, size: int, sort: String) : Page<GameListItemDto>
 }
 class GameServiceImpl
 class LeagueService {
-  +getStandings(leagueId, season): List<Standing>
+  +getStandings(leagueId: Long, season: String) : List<Standing>
 }
 class FavoriteService {
-  +follow(userId, teamId): Favorite
-  +unfollow(userId, teamId): void
-  +listFavorites(userId): List<Team>
+  +follow(userId: Long, teamId: Long) : Favorite
+  +unfollow(userId: Long, teamId: Long) : void
+  +listFavorites(userId: Long) : List<Team>
 }
 
-' === Controllers ===
+' ===== Controllers =====
 class AuthController
 class UserController
 class GameController
@@ -110,17 +141,24 @@ GameController : GET /api/v1/games?date=YYYY-MM-DD&page=&size=&sort=\nGET /api/v
 LeagueController : GET /api/v1/leagues/{id}/standings?season=YYYY
 FavoriteController : POST /api/v1/users/{id}/favorites\nDELETE /api/v1/users/{id}/favorites/{teamId}
 
-' === Relationships ===
+' ===== Domain multiplicities (fixed) =====
+' A League has many Teams and many Games; a Game belongs to exactly one League.
 League "1" -- "*" Team : has
-Team "1" -- "*" Game : homeTeam
-Team "1" -- "*" Game : awayTeam
-Game  "1" -- "1" League : in
+League "1" -- "*" Game : schedules
+
+' A Team can be home/away in many Games; each Game has exactly one home and one away team.
+Team "1" <-- "*" Game : homeTeam
+Team "1" <-- "*" Game : awayTeam
+
+' Standings are for one Team in one League/season
 Standing "*" -- "1" Team : for
 Standing "*" -- "1" League : in
+
+' Users own many Favorites; each Favorite points to one Team
 User "1" -- "*" Favorite : owns
 Favorite "*" -- "1" Team : targets
 
-' Controller→Service→Repository
+' ===== Layer connections =====
 AuthController --> AuthService
 UserController --> UserService
 GameController --> GameService
@@ -142,129 +180,5 @@ UserService ..> UserProfileDto
 
 GameService <|.. GameServiceImpl
 @enduml
-```
 
----
-
-## Sequence — UC1: GET /api/v1/games/{id}
-
-```plantuml
-@startuml
-title UC1: View Game Details
-
-actor Client
-Client -> GameController : GET /api/v1/games/{id}
-activate GameController
-
-GameController -> GameService : getGame(id: Long)
-activate GameService
-
-GameService -> GameRepository : findById(id)
-activate GameRepository
-GameRepository --> GameService : Optional<Game>
-deactivate GameRepository
-
-alt Game not found
-  GameService --> GameController : NotFound("GAME_NOT_FOUND")
-  GameController --> Client : 404 {code,message}
-  deactivate GameService
-  deactivate GameController
-else Game found
-  GameService -> TeamRepository : findById(game.homeTeamId)
-  TeamRepository --> GameService : Optional<Team>
-  GameService -> TeamRepository : findById(game.awayTeamId)
-  TeamRepository --> GameService : Optional<Team>
-
-  GameService --> GameController : GameDto
-  deactivate GameService
-  GameController --> Client : 200 JSON (GameDto)
-  deactivate GameController
-end
-@enduml
-```
-
----
-
-## Sequence — UC3: GET /api/v1/games?date=...
-
-```plantuml
-@startuml
-title UC3: Browse Fixtures by Date (pagination + filters)
-
-actor Client
-Client -> GameController : GET /api/v1/games?date=YYYY-MM-DD&page=&size=&sort=
-activate GameController
-
-GameController -> GameService : listByDate(date, page, size, sort)
-activate GameService
-
-GameService -> GameRepository : findByDate(date, page, size, sort)
-activate GameRepository
-GameRepository --> GameService : Page<Game>
-deactivate GameRepository
-
-GameService --> GameController : Page<GameListItemDto>
-deactivate GameService
-
-alt invalid date
-  GameController --> Client : 400 {code:"VALIDATION_ERROR"}
-else ok
-  GameController --> Client : 200 JSON (content[], page,size,total,sort)
-end
-
-deactivate GameController
-@enduml
-```
-
----
-
-## Sequence — UC2: POST /api/v1/users/{id}/favorites (Follow)
-
-```plantuml
-@startuml
-title UC2: Follow a Team (secured, idempotent)
-
-actor Client
-participant AuthFilter as "Security Filter"
-participant FavoriteController
-participant FavoriteService
-participant FavoriteRepository
-participant TeamRepository
-
-Client -> AuthFilter : POST /api/v1/users/{userId}/favorites {teamId}\nAuthorization: Bearer <token>
-activate AuthFilter
-AuthFilter --> FavoriteController : authenticatedPrincipal(userId)
-deactivate AuthFilter
-activate FavoriteController
-
-FavoriteController -> FavoriteService : follow(userId, teamId)
-activate FavoriteService
-
-FavoriteService -> TeamRepository : findById(teamId)
-TeamRepository --> FavoriteService : Optional<Team>
-
-alt team not found
-  FavoriteService --> FavoriteController : throw NotFound("TEAM_NOT_FOUND")
-  FavoriteController --> Client : 404 {code,message}
-  deactivate FavoriteService
-  deactivate FavoriteController
-
-end
-
-FavoriteService -> FavoriteRepository : findByUserIdAndTeamId(userId, teamId)
-FavoriteRepository --> FavoriteService : Optional<Favorite>
-
-alt already followed
-  FavoriteService --> FavoriteController : existing Favorite (idempotent)
-  FavoriteController --> Client : 200 JSON (Favorite)
-else create relation
-  FavoriteService -> FavoriteRepository : save(Favorite{userId, teamId})
-  FavoriteRepository --> FavoriteService : Favorite
-  FavoriteService --> FavoriteController : Favorite
-  FavoriteController --> Client : 201 Created JSON (Favorite)
-end
-
-deactivate FavoriteService
-deactivate FavoriteController
-@enduml
 ```
