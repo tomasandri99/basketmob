@@ -6,16 +6,16 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
-        <module name="Hugbunadarverkefni" />
+        <module name="basketmob" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
-      <module name="Hugbunadarverkefni" target="17" />
+      <module name="basketmob" target="17" />
     </bytecodeTargetLevel>
   </component>
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
-      <module name="Hugbunadarverkefni" options="-parameters" />
+      <module name="basketmob" options="-parameters" />
     </option>
   </component>
 </project>
