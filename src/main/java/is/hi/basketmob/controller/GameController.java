@@ -1,8 +1,8 @@
-package pakki.controller;
+package is.hi.basketmob.controller;
 
-import pakki.dto.GameDto;
-import pakki.dto.GameListItemDto;
-import pakki.service.GameService;
+import is.hi.basketmob.dto.GameDto;
+import is.hi.basketmob.dto.GameListItemDto;
+import is.hi.basketmob.service.GameService;
 
 import java.time.LocalDate;
 import org.springframework.data.domain.Page;

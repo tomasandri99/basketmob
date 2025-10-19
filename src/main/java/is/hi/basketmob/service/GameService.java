@@ -1,11 +1,10 @@
-package pakki.service;
+package is.hi.basketmob.service;
 
-import pakki.dto.*;
+import is.hi.basketmob.dto.GameDto;
+import is.hi.basketmob.dto.GameListItemDto;
+import is.hi.basketmob.dto.*;
 import java.time.LocalDate;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
-import org.springframework.data.domain.PageRequest;
 
 
 public interface GameService {

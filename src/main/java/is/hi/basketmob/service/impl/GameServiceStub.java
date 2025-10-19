@@ -1,7 +1,10 @@
-package pakki.service.impl;
+package is.hi.basketmob.service.impl;
 
-import pakki.dto.*;
-import pakki.service.GameService;
+import is.hi.basketmob.dto.GameDto;
+import is.hi.basketmob.dto.GameListItemDto;
+import is.hi.basketmob.dto.TeamDto;
+import is.hi.basketmob.dto.*;
+import is.hi.basketmob.service.GameService;
 
 import java.time.LocalDate;
 import java.util.List;
