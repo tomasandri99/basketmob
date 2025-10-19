@@ -1,21 +1,16 @@
 name: build
-on:
-  push:
-  pull_request:
-
+on: [push, pull_request]
 jobs:
   ci:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-
       - uses: actions/setup-java@v4
         with:
           distribution: temurin
           java-version: '17'
-          cache: 'maven'
-
+          cache: maven
       - name: Build with Maven Wrapper
         run: |
           chmod +x ./mvnw || true
-          ./mvnw -q -DskipTests package
+          ./mvnw -DskipTests package
