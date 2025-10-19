@@ -73,10 +73,11 @@
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
                 <configuration>
-                    <mainClass>pakki.BasketmobApplication</mainClass>
+                    <mainClass>is.hi.basketmob.BasketmobApplication</mainClass>
                 </configuration>
             </plugin>
         </plugins>
     </build>
+
 
 </project>
