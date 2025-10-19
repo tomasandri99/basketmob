@@ -73,10 +73,10 @@
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
                 <configuration>
-                    <!-- SET THIS TO YOUR REAL ENTRY POINT -->
-                    <mainClass>is.hi.basketmob.BasketballApplication</mainClass>
+                    <mainClass>pakki.BasketmobApplication</mainClass>
                 </configuration>
             </plugin>
         </plugins>
     </build>
+
 </project>
