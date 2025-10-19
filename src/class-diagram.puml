@@ -1,0 +1,184 @@
+@startuml
+title BasketMob — UML Class Diagram (A2)
+
+hide circle
+skinparam classAttributeIconSize 0
+
+' ===== Entities =====
+class User {
+  +Long id
+  +String email
+  +String username
+  -String passwordHash
+  +LocalDateTime createdAt
+  +LocalDateTime updatedAt
+}
+
+class Team {
+  +Long id
+  +String name
+  +String shortName
+  +String logoUrl
+  +String city
+}
+
+class League {
+  +Long id
+  +String name
+  +String season
+}
+
+class Game {
+  +Long id
+  +OffsetDateTime tipoff
+  +String status
+  +Integer homeScore
+  +Integer awayScore
+  +LocalDateTime lastUpdated
+}
+
+class Standing {
+  +Long id
+  +String season
+  +Integer played
+  +Integer wins
+  +Integer losses
+  +Integer pointsFor
+  +Integer pointsAgainst
+}
+
+class Favorite {
+  +Long id
+  +LocalDateTime createdAt
+}
+
+' ===== DTOs =====
+class TeamDto {
+  +Long id
+  +String name
+}
+class GameDto {
+  +Long id
+  +String status
+  +String tipoff
+  +TeamDto home
+  +TeamDto away
+  +Integer homeScore
+  +Integer awayScore
+}
+class GameListItemDto {
+  +Long id
+  +String tipoff
+  +String status
+  +String homeName
+  +String awayName
+}
+class UserProfileDto {
+  +Long id
+  +String email
+  +String username
+}
+class SessionToken {
+  +String token
+  +Instant expiresAt
+}
+
+' ===== Repositories =====
+interface UserRepository {
+  +findByEmail(email: String) : Optional<User>
+}
+interface TeamRepository {
+  +findById(id: Long) : Optional<Team>
+}
+interface LeagueRepository
+interface GameRepository {
+  +findById(id: Long) : Optional<Game>
+  +findByDate(date: LocalDate, page: int, size: int, sort: String) : Page<Game>
+  +save(game: Game) : Game
+}
+interface StandingRepository {
+  +findByLeagueAndSeason(leagueId: Long, season: String) : List<Standing>
+}
+interface FavoriteRepository {
+  +findByUserId(userId: Long) : List<Favorite>
+  +findByUserIdAndTeamId(userId: Long, teamId: Long) : Optional<Favorite>
+}
+
+' ===== Services =====
+class AuthService {
+  +register(email: String, username: String, password: String) : User
+  +login(email: String, password: String) : SessionToken
+}
+class UserService {
+  +getProfile(userId: Long) : UserProfileDto
+  +updateUser(userId: Long, dto: UserProfileDto) : UserProfileDto
+  +deleteUser(userId: Long) : void
+}
+interface GameService {
+  +getGame(id: Long) : GameDto
+  +listByDate(date: LocalDate, page: int, size: int, sort: String) : Page<GameListItemDto>
+}
+class GameServiceImpl
+class LeagueService {
+  +getStandings(leagueId: Long, season: String) : List<Standing>
+}
+class FavoriteService {
+  +follow(userId: Long, teamId: Long) : Favorite
+  +unfollow(userId: Long, teamId: Long) : void
+  +listFavorites(userId: Long) : List<Team>
+}
+
+' ===== Controllers =====
+class AuthController
+class UserController
+class GameController
+class LeagueController
+class FavoriteController
+
+AuthController : POST /api/v1/auth/login
+UserController : POST /api/v1/users\nGET /api/v1/users/me\nPUT|PATCH /api/v1/users/{id}\nDELETE /api/v1/users/{id}
+GameController : GET /api/v1/games?date=YYYY-MM-DD&page=&size=&sort=\nGET /api/v1/games/{id}
+LeagueController : GET /api/v1/leagues/{id}/standings?season=YYYY
+FavoriteController : POST /api/v1/users/{id}/favorites\nDELETE /api/v1/users/{id}/favorites/{teamId}
+
+' ===== Domain multiplicities (fixed) =====
+' A League has many Teams and many Games; a Game belongs to exactly one League.
+League "1" -- "*" Team : has
+League "1" -- "*" Game : schedules
+
+' A Team can be home/away in many Games; each Game has exactly one home and one away team.
+Team "1" <-- "*" Game : homeTeam
+Team "1" <-- "*" Game : awayTeam
+
+' Standings are for one Team in one League/season
+Standing "*" -- "1" Team : for
+Standing "*" -- "1" League : in
+
+' Users own many Favorites; each Favorite points to one Team
+User "1" -- "*" Favorite : owns
+Favorite "*" -- "1" Team : targets
+
+' ===== Layer connections =====
+AuthController --> AuthService
+UserController --> UserService
+GameController --> GameService
+LeagueController --> LeagueService
+FavoriteController --> FavoriteService
+
+AuthService --> UserRepository
+UserService --> UserRepository
+FavoriteService --> FavoriteRepository
+FavoriteService --> TeamRepository
+GameServiceImpl --> GameRepository
+GameServiceImpl --> LeagueRepository
+GameServiceImpl --> TeamRepository
+LeagueService --> StandingRepository
+
+GameService ..> GameDto
+GameService ..> GameListItemDto
+UserService ..> UserProfileDto
+
+GameService <|.. GameServiceImpl
+@enduml
+
+```
