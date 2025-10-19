@@ -52,7 +52,7 @@
             <version>${springdoc.version}</version>
         </dependency>
 
-        <!-- H2 for dev (optional but handy) -->
+        <!-- H2 for dev -->
         <dependency>
             <groupId>com.h2database</groupId>
             <artifactId>h2</artifactId>

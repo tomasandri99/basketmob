@@ -1,5 +1,6 @@
 package pakki.dto;
 
+
 public record GameDto(
         Long id,
         String status,
@@ -8,5 +9,6 @@ public record GameDto(
         TeamDto away,
         Integer homeScore,
         Integer awayScore
-) {}
+        ) {}
+
 
