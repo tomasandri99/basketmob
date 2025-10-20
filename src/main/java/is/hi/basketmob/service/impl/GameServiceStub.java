@@ -123,10 +123,7 @@ public class GameServiceStub implements GameService {
         };
     }
 
-    // Map to list item DTO
-    // Adjust constructor order if your GameListItemDto differs.
     private GameListItemDto toGameListItemDto(Game g) {
-        // Example shape:
         // record GameListItemDto(Long id, String homeTeam, String awayTeam, String status, String tipoff)
         return new GameListItemDto(
                 g.id,
@@ -137,15 +134,13 @@ public class GameServiceStub implements GameService {
         );
     }
 
-    // Map to detail DTO (matches GameDto above)
     private GameDto toGameDto(Game g) {
         TeamDto home = new TeamDto(g.homeTeam);
         TeamDto away = new TeamDto(g.awayTeam);
-
         return new GameDto(
                 g.id,
-                g.date.toString(),   // LocalDate -> String
-                g.tipoff.toString(), // LocalTime -> String
+                g.date.toString(),   // LocalDate -> "YYYY-MM-DD"
+                g.tipoff.toString(), // LocalTime -> "HH:mm"
                 home,
                 away,
                 g.homeScore,
@@ -153,7 +148,3 @@ public class GameServiceStub implements GameService {
         );
     }
 }
-
-
-
-

@@ -6,15 +6,10 @@ package is.hi.basketmob.dto;
  */
 public record GameDto(
         Long id,
-        String date,        // e.g., "2025-10-19"
-        String tipoff,      // e.g., "19:15"
+        String date,      // e.g., "2025-10-19"
+        String tipoff,    // e.g., "19:15"
         TeamDto homeTeam,
         TeamDto awayTeam,
-        Integer homeScore,  // null if not played
-        Integer awayScore   // null if not played
+        Integer homeScore,   // null if not played
+        Integer awayScore    // null if not played
 ) {}
-
-
-
-
-
