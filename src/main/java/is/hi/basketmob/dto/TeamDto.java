@@ -1,4 +1,4 @@
 package is.hi.basketmob.dto;
 
-public record TeamDto(Long id, String name) {}
-
+/** Minimal team DTO for now (name only). */
+public record TeamDto(String name) {}
