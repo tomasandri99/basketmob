@@ -10,7 +10,7 @@ public class League {
     private String name;   // e.g., "NBA"
     private String season; // e.g., "2025"
 
-    // getters/setters/ctors
+
     public League() {}
     public League(String name, String season) { this.name = name; this.season = season; }
 

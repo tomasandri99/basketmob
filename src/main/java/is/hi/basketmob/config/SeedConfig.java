@@ -14,10 +14,7 @@ public class SeedConfig {
     @Bean
     CommandLineRunner seed(GameRepository games, TeamRepository teams) {
         return args -> {
-            // No-op seeding for now (compile-only). Add data later.
-            // Example (when your entities are ready):
-            // if (teams.count() == 0) { ... teams.saveAll(...); }
-            // if (games.count() == 0) { ... games.saveAll(...); }
+
         };
     }
 }

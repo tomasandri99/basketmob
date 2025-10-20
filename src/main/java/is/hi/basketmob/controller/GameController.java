@@ -32,10 +32,7 @@ public class GameController {
         return ResponseEntity.ok(gameService.getGame(id));
     }
 
-    /**
-     * List games for a specific date with paging and sorting.
-     * Example: GET /api/v1/games?date=2025-10-19&page=0&size=20&sort=tipoff,asc
-     */
+
     @GetMapping
     public ResponseEntity<Page<GameListItemDto>> listByDate(
             @RequestParam
