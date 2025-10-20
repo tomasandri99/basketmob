@@ -11,7 +11,7 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
-import javax.persistence.EntityNotFoundException;
+import javax.persistence.EntityNotFoundException; // Boot 2.7 -> javax.*
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
@@ -25,16 +25,16 @@ import java.util.Objects;
 @Primary
 public class GameServiceStub implements GameService {
 
-
+    // --------- Minimal in-memory model ----------
     private static final class Game {
         final Long id;
         final LocalDate date;
         final LocalTime tipoff;
         final String homeTeam;
         final String awayTeam;
-        final Integer homeScore;
-        final Integer awayScore;
-        final String status;
+        final Integer homeScore; // null if not played
+        final Integer awayScore; // null if not played
+        final String status;     // e.g., "SCHEDULED","FINAL","LIVE"
 
         Game(Long id, LocalDate date, LocalTime tipoff,
              String homeTeam, String awayTeam,
@@ -77,7 +77,7 @@ public class GameServiceStub implements GameService {
 
     @Override
     public Page<GameListItemDto> listByDate(LocalDate date, int page, int size, String sort) {
-
+        // sort looks like "tipoff,asc" | "id,desc" | "status,asc"
         String sortField = "tipoff";
         boolean asc = true;
         if (sort != null && !sort.isBlank()) {
@@ -94,7 +94,7 @@ public class GameServiceStub implements GameService {
                 .sorted(cmp)
                 .toList();
 
-
+        // paging
         page = Math.max(0, page);
         size = Math.max(1, size);
         int from = page * size;
@@ -106,7 +106,7 @@ public class GameServiceStub implements GameService {
         return new PageImpl<>(items, PageRequest.of(page, size), sameDay.size());
     }
 
-
+    // ----------------- Helpers -----------------
 
     private Comparator<Game> comparatorFor(String sortField) {
         return switch (sortField) {
@@ -120,9 +120,11 @@ public class GameServiceStub implements GameService {
         };
     }
 
-
+    // Map to list item DTO
+    // Adjust constructor order if your GameListItemDto differs.
     private GameListItemDto toGameListItemDto(Game g) {
-
+        // Example shape:
+        // record GameListItemDto(Long id, String homeTeam, String awayTeam, String status, String tipoff)
         return new GameListItemDto(
                 g.id,
                 g.homeTeam,
@@ -132,15 +134,15 @@ public class GameServiceStub implements GameService {
         );
     }
 
-
+    // Map to detail DTO (matches GameDto above)
     private GameDto toGameDto(Game g) {
         TeamDto home = new TeamDto(g.homeTeam);
         TeamDto away = new TeamDto(g.awayTeam);
 
         return new GameDto(
                 g.id,
-                g.date.toString(),
-                g.tipoff.toString(),
+                g.date.toString(),   // LocalDate -> String
+                g.tipoff.toString(), // LocalTime -> String
                 home,
                 away,
                 g.homeScore,
