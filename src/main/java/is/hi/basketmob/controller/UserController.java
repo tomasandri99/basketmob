@@ -42,7 +42,15 @@ public class UserController {
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> delete(@PathVariable Long id) {
-        userService.deleteUser(id, /*actorUserId*/ id, /*actorIsAdmin*/ false); // dev shortcut
+        userService.deleteUser(id, /*actorUserId*/ id, /*actorIsAdmin*/ false);
         return ResponseEntity.noContent().build();
     }
-}
+        @GetMapping("/me")
+        public ResponseEntity<UserResponse> me() {
+
+            var u = userService.findByEmail("tomas@example.com");
+            return ResponseEntity.ok(UserMapper.toResponse(u));
+        }
+
+    }
+
