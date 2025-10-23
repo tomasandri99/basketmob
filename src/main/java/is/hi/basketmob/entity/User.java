@@ -1,4 +1,4 @@
-package is.hi.basketmob.entities;
+package is.hi.basketmob.entity;
 
 import javax.persistence.*;
 import java.time.OffsetDateTime;

@@ -1,8 +1,8 @@
 package is.hi.basketmob.service;
 
 import is.hi.basketmob.dto.UserUpdateRequest;
-import is.hi.basketmob.entities.User;
-import is.hi.basketmob.repositories.UserRepository;
+import is.hi.basketmob.entity.User;
+import is.hi.basketmob.repository.UserRepository;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -13,6 +13,7 @@ import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
 import java.util.Objects;
 import java.util.Optional;
+
 
 @Service
 public class UserService {

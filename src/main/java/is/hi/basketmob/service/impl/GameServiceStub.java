@@ -1,5 +1,5 @@
 package is.hi.basketmob.service.impl;
-
+import org.springframework.context.annotation.Profile;
 import is.hi.basketmob.dto.GameDto;
 import is.hi.basketmob.dto.GameListItemDto;
 import is.hi.basketmob.dto.TeamDto;
@@ -21,8 +21,8 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
 
+@Profile("stub")
 @Service
-@org.springframework.context.annotation.Profile("stub")
 public class GameServiceStub implements GameService {
 
 

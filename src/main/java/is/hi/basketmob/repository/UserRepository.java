@@ -1,6 +1,6 @@
-package is.hi.basketmob.repositories;
+package is.hi.basketmob.repository;
 
-import is.hi.basketmob.entities.User;
+import is.hi.basketmob.entity.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;
