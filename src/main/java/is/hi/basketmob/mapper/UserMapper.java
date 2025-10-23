@@ -1,7 +1,7 @@
 package is.hi.basketmob.mapper;
 
 import is.hi.basketmob.dto.UserResponse;
-import is.hi.basketmob.entities.User;
+import is.hi.basketmob.entity.User;
 
 public final class UserMapper {
     private UserMapper() {}

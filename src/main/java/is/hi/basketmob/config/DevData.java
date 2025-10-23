@@ -1,7 +1,7 @@
 package is.hi.basketmob.config;
 
-import is.hi.basketmob.entities.User;
-import is.hi.basketmob.repositories.UserRepository;
+import is.hi.basketmob.entity.User;
+import is.hi.basketmob.repository.UserRepository;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

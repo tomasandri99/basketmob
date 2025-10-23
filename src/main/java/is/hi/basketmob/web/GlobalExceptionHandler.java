@@ -1,5 +1,6 @@
-package is.hi.basketmob.api;
+package is.hi.basketmob.web;
 
+import is.hi.basketmob.api.ApiError;
 import org.springframework.http.*;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;

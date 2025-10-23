@@ -2,7 +2,7 @@ package is.hi.basketmob.controller;
 
 import is.hi.basketmob.dto.UserResponse;
 import is.hi.basketmob.dto.UserUpdateRequest;
-import is.hi.basketmob.entities.User;
+import is.hi.basketmob.entity.User;
 import is.hi.basketmob.mapper.UserMapper;
 import is.hi.basketmob.service.UserService;
 import org.springframework.http.ResponseEntity;
