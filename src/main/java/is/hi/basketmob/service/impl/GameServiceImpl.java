@@ -4,6 +4,7 @@ import is.hi.basketmob.dto.GameDto;
 import is.hi.basketmob.dto.GameListItemDto;
 import is.hi.basketmob.dto.TeamDto;
 import is.hi.basketmob.entity.Game;
+import is.hi.basketmob.entity.Team;
 import is.hi.basketmob.repository.GameRepository;
 import is.hi.basketmob.service.GameService;
 import org.springframework.context.annotation.Profile;
@@ -31,11 +32,8 @@ public class GameServiceImpl implements GameService {
     public GameDto getGame(Long id) {
         Game g = gameRepository.findById(id)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "GAME_NOT_FOUND"));
-        var home = g.getHomeTeam();
-        var away = g.getAwayTeam();
-        TeamDto homeDto = new TeamDto(home.getId(), home.getName());
-        TeamDto awayDto = new TeamDto(away.getId(), away.getName());
-
+        TeamDto homeDto = toTeamDto(g.getHomeTeam());
+        TeamDto awayDto = toTeamDto(g.getAwayTeam());
         var tip = g.getTipoff();
         String date = tip.toLocalDate().toString();
         String time = tip.toLocalTime()
@@ -79,5 +77,15 @@ public class GameServiceImpl implements GameService {
                     g.getAwayTeam().getName()
             );
         });
+    }
+
+    private TeamDto toTeamDto(Team team) {
+        return new TeamDto(
+                team.getId(),
+                team.getName(),
+                team.getShortName(),
+                team.getCity(),
+                team.getLogoUrl()
+        );
     }
 }

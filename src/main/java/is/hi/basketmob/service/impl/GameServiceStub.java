@@ -134,8 +134,8 @@ public class GameServiceStub implements GameService {
     private GameDto toGameDto(Game g) {
         long homeId = stableIdFromName(g.homeTeam);
         long awayId = stableIdFromName(g.awayTeam);
-        TeamDto home = new TeamDto(homeId, g.homeTeam);
-        TeamDto away = new TeamDto(awayId, g.awayTeam);
+        TeamDto home = new TeamDto(homeId, g.homeTeam, null, null, null);
+        TeamDto away = new TeamDto(awayId, g.awayTeam, null, null, null);
         String tipoffIso = LocalDateTime.of(g.date, g.tipoff).atOffset(ZoneOffset.UTC).toString();
 
         return new GameDto(
