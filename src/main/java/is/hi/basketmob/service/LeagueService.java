@@ -14,7 +14,7 @@ import org.springframework.web.server.ResponseStatusException;
 import java.util.*;
 
 @Service
-public class LeagueService {
+public class LeagueService implements StandingsProvider {
     private final LeagueRepository leagues;
     private final TeamRepository teams;
     private final GameRepository games;
