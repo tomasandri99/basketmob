@@ -51,8 +51,8 @@ public class SecurityConfig {
                         .antMatchers(HttpMethod.POST, "/api/v1/users").permitAll()
                         .anyRequest().authenticated()
                 )
-                .addFilterBefore(rateLimitFilter, AuthTokenFilter.class)
-                .addFilterBefore(authTokenFilter, UsernamePasswordAuthenticationFilter.class);
+                .addFilterBefore(authTokenFilter, UsernamePasswordAuthenticationFilter.class)
+                .addFilterBefore(rateLimitFilter, AuthTokenFilter.class);
 
         return http.build();
     }
