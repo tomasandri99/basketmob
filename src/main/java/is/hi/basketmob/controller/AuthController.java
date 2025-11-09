@@ -5,6 +5,7 @@ import is.hi.basketmob.dto.UserSignupRequest;
 import is.hi.basketmob.dto.LoginRequest;
 import is.hi.basketmob.dto.AuthResponse;
 import is.hi.basketmob.entity.User;
+import is.hi.basketmob.mapper.UserMapper;
 import is.hi.basketmob.repository.UserRepository;
 import is.hi.basketmob.service.AuthTokenService;
 import org.springframework.http.HttpStatus;
@@ -46,15 +47,18 @@ public class AuthController {
 
         OffsetDateTime nowUtc = OffsetDateTime.now(ZoneOffset.UTC);
 
+        boolean firstUser = userRepository.count() == 0;
+
         User u = new User();
         u.setEmail(req.email);
         u.setPassword(passwordEncoder.encode(req.password));
         u.setDisplayName(req.displayName);
+        u.setAdmin(firstUser);
         u.setCreatedAt(nowUtc);
         u.setUpdatedAt(nowUtc);
         u = userRepository.save(u);
 
-        return ResponseEntity.status(HttpStatus.CREATED).body(toResponse(u));
+        return ResponseEntity.status(HttpStatus.CREATED).body(UserMapper.toResponse(u));
     }
 
     @PostMapping("/login")
@@ -70,13 +74,9 @@ public class AuthController {
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Invalid credentials");
         }
 
-        String token = tokenService.issueToken(u.getId());
+        String token = tokenService.issueToken(u.getId(), u.isAdmin());
         OffsetDateTime expires = OffsetDateTime.now(ZoneOffset.UTC).plusDays(1);
 
-        return new AuthResponse(token, expires, toResponse(u));
-    }
-
-    private static UserResponse toResponse(User u) {
-        return new UserResponse(u.getId(), u.getEmail(), u.getDisplayName(), u.getAvatarUrl(), u.getGender());
+        return new AuthResponse(token, expires, UserMapper.toResponse(u));
     }
 }
