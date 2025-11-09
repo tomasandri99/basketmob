@@ -1,0 +1,294 @@
+:root {
+    font-family: "Segoe UI", Arial, sans-serif;
+    color: #0b0b0f;
+    background-color: #f5f6f8;
+}
+
+body {
+    margin: 0;
+    background-color: #f5f6f8;
+    color: #0b0b0f;
+}
+
+.container {
+    max-width: 960px;
+    margin: 0 auto;
+    padding: 0 1.5rem;
+}
+
+.site-header {
+    background: #0b0b0f;
+    color: #fff;
+    padding: 1rem 0;
+}
+
+.nav-grid {
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    align-items: center;
+    gap: 1rem;
+}
+
+.logo {
+    font-weight: 700;
+    letter-spacing: 0.04em;
+}
+
+nav a {
+    color: #cdd3ff;
+    margin-right: 1rem;
+    text-decoration: none;
+    font-weight: 500;
+}
+
+nav a:hover {
+    color: #fff;
+}
+
+.auth-controls {
+    display: flex;
+    gap: 0.5rem;
+    align-items: center;
+}
+
+.hero {
+    background: #ffffff;
+    padding: 2rem;
+    border-radius: 12px;
+    margin: 2rem 0;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.07);
+}
+
+.hero-actions {
+    margin-top: 1.5rem;
+}
+
+.btn {
+    display: inline-block;
+    padding: 0.6rem 1.4rem;
+    border-radius: 999px;
+    text-decoration: none;
+    font-weight: 600;
+    border: none;
+    cursor: pointer;
+}
+
+.btn.primary {
+    background: #4f46e5;
+    color: #fff;
+}
+
+.btn.secondary {
+    background: #fff;
+    color: #4f46e5;
+    border: 1px solid #4f46e5;
+}
+
+.btn.tertiary {
+    background: #fde68a;
+    color: #92400e;
+}
+
+.btn.full {
+    width: 100%;
+    text-align: center;
+}
+
+.link-btn {
+    background: transparent;
+    border: none;
+    color: #4f46e5;
+    cursor: pointer;
+    padding: 0;
+    font-size: 0.9rem;
+}
+
+.muted {
+    color: #6b7280;
+    font-size: 0.9rem;
+}
+
+.card-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 1rem;
+}
+
+.game-card {
+    background: #fff;
+    border-radius: 12px;
+    padding: 1rem;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.06);
+}
+
+.game-card .game-time {
+    font-weight: 600;
+}
+
+.game-card .status {
+    font-size: 0.85rem;
+    color: #6b7280;
+}
+
+.game-teams {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 0.5rem;
+    margin-top: 0.5rem;
+}
+
+.filter-bar {
+    margin: 2rem 0 1rem;
+}
+
+.filter-form {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.standings-table-wrapper {
+    overflow-x: auto;
+    background: #fff;
+    border-radius: 12px;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.05);
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+th, td {
+    padding: 0.75rem 1rem;
+    text-align: left;
+}
+
+thead {
+    background: #f3f4f6;
+}
+
+.form-card {
+    background: #fff;
+    border-radius: 12px;
+    padding: 1.5rem;
+    box-shadow: 0 4px 24px rgba(0, 0, 0, 0.05);
+    margin-bottom: 1.5rem;
+}
+
+.form-card form {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+}
+
+input[type="text"],
+input[type="email"],
+input[type="password"],
+input[type="url"],
+input[type="date"],
+select {
+    padding: 0.65rem;
+    border-radius: 8px;
+    border: 1px solid #d1d5db;
+    font-size: 1rem;
+}
+
+.field-error {
+    color: #b91c1c;
+    font-size: 0.85rem;
+}
+
+.flash-container {
+    max-width: 960px;
+    margin: 1rem auto;
+    padding: 0 1.5rem;
+}
+
+.flash {
+    padding: 0.9rem 1.2rem;
+    border-radius: 10px;
+    margin-bottom: 0.75rem;
+    font-weight: 500;
+}
+
+.flash-success {
+    background: #ecfdf5;
+    color: #065f46;
+}
+
+.flash-error {
+    background: #fef2f2;
+    color: #b91c1c;
+}
+
+.container.narrow {
+    max-width: 520px;
+}
+
+.user-card {
+    background: #111827;
+    color: #fff;
+    padding: 1.5rem;
+    border-radius: 16px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 2rem 0 1rem;
+}
+
+.badge {
+    background: rgba(255, 255, 255, 0.15);
+    padding: 0.4rem 0.9rem;
+    border-radius: 999px;
+    font-size: 0.85rem;
+}
+
+.dashboard-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 1.5rem;
+    margin-bottom: 2rem;
+}
+
+.favorite-list,
+.notification-list {
+    list-style: none;
+    padding: 0;
+    margin: 0 0 1rem 0;
+}
+
+.favorite-list li,
+.notification-list li {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.75rem 0;
+    border-bottom: 1px solid #e5e7eb;
+}
+
+.section-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+}
+
+.site-footer {
+    margin-top: 3rem;
+    padding: 2rem 0;
+    background: #0b0b0f;
+    color: #fff;
+    text-align: center;
+}
+
+.user-chip {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+}
+
+.chip-label {
+    font-size: 0.9rem;
+}

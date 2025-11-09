@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>BasketMob · Mín síða</title>
+    <link rel="stylesheet" th:href="@{/css/styles.css}">
+</head>
+<body>
+<header th:replace="fragments/nav :: siteNav"></header>
+<div th:replace="fragments/nav :: alerts"></div>
+
+<main class="container">
+    <section class="user-card">
+        <div>
+            <h1 th:text="${profile.displayName != null ? profile.displayName : profile.email}"></h1>
+            <p class="muted" th:text="${profile.email}"></p>
+        </div>
+        <div class="badge" th:text="${profile.admin} ? 'Stjórnandi' : 'Aðgangur'"></div>
+    </section>
+
+    <section class="dashboard-grid">
+        <article class="form-card">
+            <h2>Uppfæra prófíl</h2>
+            <form method="post" th:action="@{/dashboard/profile}" th:object="${profileForm}">
+                <label for="displayName">Sýnilegt nafn</label>
+                <input type="text" id="displayName" th:field="*{displayName}">
+                <div class="field-error" th:if="${#fields.hasErrors('displayName')}" th:errors="*{displayName}"></div>
+
+                <label for="avatarUrl">Mynd (slóð)</label>
+                <input type="url" id="avatarUrl" th:field="*{avatarUrl}">
+                <div class="field-error" th:if="${#fields.hasErrors('avatarUrl')}" th:errors="*{avatarUrl}"></div>
+
+                <label for="gender">Kyn</label>
+                <select id="gender" th:field="*{gender}">
+                    <option value="">Velja...</option>
+                    <option value="male">Karl</option>
+                    <option value="female">Kona</option>
+                    <option value="other">Annað</option>
+                </select>
+                <div class="field-error" th:if="${#fields.hasErrors('gender')}" th:errors="*{gender}"></div>
+
+                <button type="submit" class="btn primary full">Vista breytingar</button>
+            </form>
+        </article>
+
+        <article class="form-card">
+            <h2>Uppáhaldslið</h2>
+            <p th:if="${favorites.isEmpty()}" class="muted">Þú hefur ekki valið lið ennþá.</p>
+            <ul class="favorite-list" th:if="${!favorites.isEmpty()}">
+                <li th:each="team : ${favorites}">
+                    <span>
+                        <strong th:text="${team.name()}"></strong>
+                        <small class="muted" th:text="${team.city()}"></small>
+                    </span>
+                    <form method="post" th:action="@{'/dashboard/favorites/' + ${team.id()} + '/delete'}">
+                        <button type="submit" class="link-btn">Fjarlægja</button>
+                    </form>
+                </li>
+            </ul>
+            <hr>
+            <form method="post" th:action="@{/dashboard/favorites}">
+                <label for="teamId">Bæta við liði</label>
+                <select id="teamId" name="teamId" required>
+                    <option value="" disabled selected>Veldu lið</option>
+                    <option th:each="team : ${availableTeams}"
+                            th:value="${team.id}"
+                            th:text="${team.name} + ' (' + team.city + ')'"></option>
+                </select>
+                <button type="submit" class="btn secondary full" th:disabled="${availableTeams.isEmpty()}">Bæta við</button>
+                <p th:if="${availableTeams.isEmpty()}" class="muted">Allir liðir eru þegar á listanum.</p>
+            </form>
+        </article>
+    </section>
+
+    <section class="form-card">
+        <div class="section-header">
+            <h2>Tilkynningar</h2>
+            <form method="post" th:action="@{/dashboard/notifications/clear}">
+                <button type="submit" class="link-btn">Hreinsa</button>
+            </form>
+        </div>
+        <p th:if="${notifications.isEmpty()}" class="muted">Engar tilkynningar í bili.</p>
+        <ul class="notification-list" th:if="${!notifications.isEmpty()}">
+            <li th:each="note : ${notifications}">
+                <div>
+                    <strong th:text="${note.message()}"></strong>
+                    <small class="muted" th:text="${#temporals.format(note.createdAt(), 'dd.MM.yyyy HH:mm')}"></small>
+                </div>
+            </li>
+        </ul>
+    </section>
+</main>
+
+<footer class="site-footer">
+    <div class="container">
+        <span>© 2025 BasketMob</span>
+    </div>
+</footer>
+</body>
+</html>

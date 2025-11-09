@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>BasketMob · Nýskrá</title>
+    <link rel="stylesheet" th:href="@{/css/styles.css}">
+</head>
+<body>
+<header th:replace="fragments/nav :: siteNav"></header>
+<div th:replace="fragments/nav :: alerts"></div>
+
+<main class="container narrow">
+    <section class="form-card">
+        <h1>Nýskráning</h1>
+        <form method="post" th:action="@{/register}" th:object="${registerForm}">
+            <label for="displayName">Nafn / sýnilegur titill</label>
+            <input type="text" id="displayName" th:field="*{displayName}" placeholder="T.d. Fan #1">
+            <div class="field-error" th:if="${#fields.hasErrors('displayName')}" th:errors="*{displayName}"></div>
+
+            <label for="email">Netfang</label>
+            <input type="email" id="email" th:field="*{email}" placeholder="you@example.com">
+            <div class="field-error" th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></div>
+
+            <label for="password">Lykilorð</label>
+            <input type="password" id="password" th:field="*{password}" placeholder="Að minnsta kosti 8 stafir">
+            <div class="field-error" th:if="${#fields.hasErrors('password')}" th:errors="*{password}"></div>
+
+            <button type="submit" class="btn primary full">Stofna aðgang</button>
+        </form>
+        <p class="muted">Kominn með aðgang? <a th:href="@{/login}">Innskráðu þig hér</a>.</p>
+    </section>
+</main>
+
+<footer class="site-footer">
+    <div class="container">
+        <span>© 2025 BasketMob</span>
+    </div>
+</footer>
+</body>
+</html>

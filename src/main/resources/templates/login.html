@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>BasketMob · Innskrá</title>
+    <link rel="stylesheet" th:href="@{/css/styles.css}">
+</head>
+<body>
+<header th:replace="fragments/nav :: siteNav"></header>
+<div th:replace="fragments/nav :: alerts"></div>
+
+<main class="container narrow">
+    <section class="form-card">
+        <h1>Innskráning</h1>
+        <form method="post" th:action="@{/login}" th:object="${loginForm}">
+            <label for="email">Netfang</label>
+            <input type="email" id="email" th:field="*{email}" placeholder="you@example.com">
+            <div class="field-error" th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></div>
+
+            <label for="password">Lykilorð</label>
+            <input type="password" id="password" th:field="*{password}" placeholder="********">
+            <div class="field-error" th:if="${#fields.hasErrors('password')}" th:errors="*{password}"></div>
+
+            <div class="field-error" th:if="${#fields.hasGlobalErrors()}" th:each="err : ${#fields.globalErrors()}" th:text="${err}"></div>
+
+            <button type="submit" class="btn primary full">Innskrá</button>
+        </form>
+        <p class="muted">Enginn aðgangur? <a th:href="@{/register}">Skráðu þig hér</a>.</p>
+    </section>
+</main>
+
+<footer class="site-footer">
+    <div class="container">
+        <span>© 2025 BasketMob</span>
+    </div>
+</footer>
+</body>
+</html>
