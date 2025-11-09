@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>BasketMob</title>
+    <link rel="stylesheet" th:href="@{/css/styles.css}">
+</head>
+<body>
+<div th:replace="fragments/nav :: body"></div>
+
+<main class="page">
+    <section class="hero">
+        <h1>Welcome to BasketMob</h1>
+        <p>Your Icelandic basketball companion with live fixtures, standings, and personalized alerts.</p>
+        <div class="hero__actions">
+            <a class="btn" th:href="@{/games}">Browse Fixtures</a>
+            <a class="btn btn--secondary" th:href="@{/standings}">View Standings</a>
+        </div>
+    </section>
+
+    <section class="cards">
+        <article class="card">
+            <h2>Real fixtures</h2>
+            <p>Data is preloaded from the 2025–26 Dominos League schedule so demos work offline.</p>
+        </article>
+        <article class="card">
+            <h2>Favorites & Alerts</h2>
+            <p>Create an account, follow teams, and receive notifications when games go final.</p>
+        </article>
+        <article class="card">
+            <h2>Secure APIs</h2>
+            <p>All user-specific endpoints require bearer tokens. Use the OpenAPI docs to explore.</p>
+        </article>
+    </section>
+</main>
+</body>
+</html>

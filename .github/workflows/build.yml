@@ -16,4 +16,4 @@ jobs:
       - name: Build with Maven Wrapper
         run: |
           chmod +x ./mvnw || true
-          ./mvnw -q -DskipTests package
+          ./mvnw -q test

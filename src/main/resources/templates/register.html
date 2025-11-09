@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Register · BasketMob</title>
+    <link rel="stylesheet" th:href="@{/css/styles.css}">
+</head>
+<body>
+<div th:replace="fragments/nav :: body"></div>
+<main class="page auth">
+    <h1>Create account</h1>
+    <form th:action="@{/register}" method="post" th:object="${registerForm}" class="form">
+        <label>Email
+            <input type="email" th:field="*{email}" required>
+        </label>
+        <label>Display name
+            <input type="text" th:field="*{displayName}" required minlength="2" maxlength="50">
+        </label>
+        <label>Password
+            <input type="password" th:field="*{password}" required minlength="8">
+        </label>
+        <button type="submit" class="btn">Register</button>
+    </form>
+</main>
+</body>
+</html>

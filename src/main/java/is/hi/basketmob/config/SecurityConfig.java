@@ -1,6 +1,7 @@
 package is.hi.basketmob.config;
 
 import is.hi.basketmob.security.AuthTokenFilter;
+import is.hi.basketmob.security.RateLimitFilter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -15,9 +16,12 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 public class SecurityConfig {
 
     private final AuthTokenFilter authTokenFilter;
+    private final RateLimitFilter rateLimitFilter;
 
-    public SecurityConfig(AuthTokenFilter authTokenFilter) {
+    public SecurityConfig(AuthTokenFilter authTokenFilter,
+                          RateLimitFilter rateLimitFilter) {
         this.authTokenFilter = authTokenFilter;
+        this.rateLimitFilter = rateLimitFilter;
     }
 
     @Bean
@@ -28,6 +32,7 @@ public class SecurityConfig {
                         .antMatchers("/api/v1/admin/**").hasRole("ADMIN")
                         .antMatchers(
                                 "/api/v1/auth/**",
+                                "/api/v1/users",
                                 "/swagger-ui/**",
                                 "/v3/api-docs/**",
                                 "/",
@@ -42,9 +47,11 @@ public class SecurityConfig {
                                 "/images/**",
                                 "/favicon.ico"
                         ).permitAll()
-                        .antMatchers(HttpMethod.GET, "/api/v1/games/**", "/api/v1/standings/**", "/api/v1/leagues/**").permitAll()
+                        .antMatchers(HttpMethod.GET, "/api/v1/games/**", "/api/v1/standings/**", "/api/v1/leagues/**", "/api/v1/search/**").permitAll()
+                        .antMatchers(HttpMethod.POST, "/api/v1/users").permitAll()
                         .anyRequest().authenticated()
                 )
+                .addFilterBefore(rateLimitFilter, AuthTokenFilter.class)
                 .addFilterBefore(authTokenFilter, UsernamePasswordAuthenticationFilter.class);
 
         return http.build();

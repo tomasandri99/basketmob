@@ -7,4 +7,5 @@ import java.util.List;
 
 public interface TeamRepository extends JpaRepository<Team, Long> {
     List<Team> findByLeagueId(Long leagueId);
+    List<Team> findTop10ByNameContainingIgnoreCase(String name);
 }

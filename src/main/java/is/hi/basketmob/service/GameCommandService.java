@@ -7,6 +7,7 @@ import is.hi.basketmob.entity.Game;
 import is.hi.basketmob.entity.Team;
 import is.hi.basketmob.notification.GameUpdatePublisher;
 import is.hi.basketmob.repository.GameRepository;
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.context.annotation.Profile;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -28,6 +29,7 @@ public class GameCommandService {
         this.publisher = publisher;
     }
 
+    @CacheEvict(cacheNames = "games", allEntries = true)
     @Transactional
     public GameDto updateGame(Long id, GameUpdateRequest request) {
         Game game = games.findById(id)
@@ -68,9 +70,16 @@ public class GameCommandService {
                 .format(DateTimeFormatter.ofPattern("HH:mm"));
 
         return new GameDto(
-                g.getId(), date, time,
-                homeDto, awayDto,
-                g.getHomeScore(), g.getAwayScore()
+                g.getId(),
+                date,
+                time,
+                g.getStatus().name(),
+                homeDto,
+                awayDto,
+                g.getHomeScore(),
+                g.getAwayScore(),
+                g.getLeague().getName(),
+                false
         );
     }
 

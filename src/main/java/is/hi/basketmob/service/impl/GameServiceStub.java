@@ -81,7 +81,17 @@ public class GameServiceStub implements GameService {
     }
 
     @Override
-    public Page<GameListItemDto> listByDate(LocalDate date, int page, int size, String sort) {
+    public Page<GameListItemDto> listGames(LocalDate date,
+                                           LocalDate dateFrom,
+                                           LocalDate dateTo,
+                                           Long leagueId,
+                                           is.hi.basketmob.entity.Game.Status status,
+                                           int page,
+                                           int size,
+                                           String sort) {
+        LocalDate rangeStart = date != null ? date : (dateFrom != null ? dateFrom : LocalDate.now());
+        LocalDate rangeEnd = date != null ? date : (dateTo != null ? dateTo : rangeStart);
+
         String sortField = "tipoff";
         boolean asc = true;
         if (sort != null && !sort.isBlank()) {
@@ -93,20 +103,21 @@ public class GameServiceStub implements GameService {
         Comparator<Game> cmp = comparatorFor(sortField);
         if (!asc) cmp = cmp.reversed();
 
-        List<Game> sameDay = games.stream()
-                .filter(g -> g.date.equals(date))
+        List<Game> filtered = games.stream()
+                .filter(g -> !g.date.isBefore(rangeStart) && !g.date.isAfter(rangeEnd))
+                .filter(g -> status == null || g.status.equalsIgnoreCase(status.name()))
                 .sorted(cmp)
                 .toList();
 
         page = Math.max(0, page);
         size = Math.max(1, size);
         int from = page * size;
-        int to = Math.min(from + size, sameDay.size());
+        int to = Math.min(from + size, filtered.size());
 
-        List<Game> slice = (from >= sameDay.size()) ? List.of() : sameDay.subList(from, to);
+        List<Game> slice = (from >= filtered.size()) ? List.of() : filtered.subList(from, to);
         List<GameListItemDto> items = slice.stream().map(this::toGameListItemDto).toList();
 
-        return new PageImpl<>(items, PageRequest.of(page, size), sameDay.size());
+        return new PageImpl<>(items, PageRequest.of(page, size), filtered.size());
     }
 
     private Comparator<Game> comparatorFor(String sortField) {
@@ -120,13 +131,13 @@ public class GameServiceStub implements GameService {
 
 
     private GameListItemDto toGameListItemDto(Game g) {
-        String tipoffIso = LocalDateTime.of(g.date, g.tipoff).atOffset(ZoneOffset.UTC).toString();
+        String tipoff = g.tipoff.toString();
         return new GameListItemDto(
                 g.id,
-                g.homeTeam,
-                g.awayTeam,
+                tipoff,
                 g.status,
-                tipoffIso
+                g.homeTeam,
+                g.awayTeam
         );
     }
 
@@ -140,12 +151,15 @@ public class GameServiceStub implements GameService {
 
         return new GameDto(
                 g.id,
+                g.date.toString(),
+                g.tipoff.toString(),
                 g.status,
-                tipoffIso,
                 home,
                 away,
                 g.homeScore,
-                g.awayScore
+                g.awayScore,
+                "Stub League",
+                true
         );
     }
 

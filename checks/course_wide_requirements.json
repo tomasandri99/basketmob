@@ -1,0 +1,71 @@
+{
+  "meta": {
+    "course": "HBV501G Software Project 1",
+    "deck": "02 - Vision & Use Cases"
+  },
+  "endpoint_types_required": [
+    "Account Management: POST /users, POST /auth/login, PUT|PATCH /users/{id}, DELETE /users/{id}",
+    "Data Retrieval: GET all collections, GET by id, GET filtered via query, GET user-specific data",
+    "Data Relations: POST create relation, DELETE delete relation",
+    "Security: some endpoints require authentication",
+    "Data Modification: PUT|PATCH modify resources, DELETE delete resources",
+    "Advanced: ONE of {advanced filtering/sorting, pagination, additive params, binary upload, enhanced security, complex relations/transactions}"
+  ],
+  "basketmob_mapping": [
+    "Accounts ✔: POST /api/v1/users, POST /api/v1/auth/login, PUT|PATCH /api/v1/users/{id}, DELETE /api/v1/users/{id}",
+    "Retrieval ✔: GET /api/v1/games, GET /api/v1/games/{id}, GET /api/v1/leagues/{id}/standings?season=YYYY, GET /api/v1/search, GET /api/v1/users/me",
+    "Relations ✔: POST /api/v1/me/favorites, DELETE /api/v1/me/favorites/{teamId}",
+    "Security ✔: auth required for /users/me, favorites*, account modification/deletion; no PII logs",
+    "Modification ✔: PUT|PATCH /api/v1/users/{id}, DELETE /api/v1/users/{id}",
+    "Advanced ✔: GET /api/v1/games with page,size,sort + additive filters date|dateFrom|dateTo|leagueId|status"
+  ],
+  "process_requirements": {
+    "a1_inception": [
+      "Vision & Scope: required sections present",
+      "Use Case doc: 3 fully-dressed, rest in brief",
+      "Project Plan: endpoints per phase/sprint",
+      "Project skeleton on GitHub with commits by all team members"
+    ],
+    "up_expectations": [
+      "Elaboration: baseline architecture, risk mitigation evidence",
+      "Construction: iterative implementation + tests",
+      "Transition: deployment readiness, release notes & install/support artifacts"
+    ],
+    "gitflow": [
+      "Feature branches from develop; PRs back to develop",
+      "Release branches to main + develop",
+      "Hotfix branches from main, merged back to main + develop"
+    ]
+  },
+  "acceptance_checks_api_shape": [
+    "All endpoints mounted under /api/v1",
+    "Timestamps ISO-8601 UTC",
+    "Pagination params page(size default 20,max 100) & sort",
+    "Additive filters supported for retrieval endpoints",
+    "Error schema {code,message,details?} with correct HTTP statuses"
+  ],
+  "advanced_endpoint_checks": [
+    "Fixtures endpoint supports pagination (page,size) and sorting (sort=field,dir)",
+    "Filters are additive: date or dateFrom/dateTo + leagueId + status",
+    "Documented examples in OpenAPI with parameter constraints"
+  ],
+  "security_checks": [
+    "Protected endpoints reject unauthenticated requests (401)",
+    "Role/ownership rules enforced for /users/{id} modification/deletion (403 when not owner)",
+    "No PII in logs; tokens/secrets never logged"
+  ],
+  "data_relation_checks": [
+    "Follow: idempotent create returns 201 or 200 existing",
+    "Unfollow: returns 204 or 200 and relation removed",
+    "User-specific feed reflects relations"
+  ],
+  "non_functional_samples": [
+    "List endpoints cached; dev-machine cached read P95 < 500ms",
+    "Seed/ingest present; responses can indicate stale=true when applicable"
+  ],
+  "documentation_checks": [
+    "OpenAPI exposes all endpoints, params, models, errors",
+    "README describes run profiles (H2 tests, Postgres dev/prod) and auth flow",
+    "Release notes prepared for transition milestone"
+  ]
+}

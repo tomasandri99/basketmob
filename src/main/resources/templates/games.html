@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Fixtures · BasketMob</title>
+    <link rel="stylesheet" th:href="@{/css/styles.css}">
+</head>
+<body>
+<div th:replace="fragments/nav :: body"></div>
+
+<main class="page">
+    <h1>Fixtures</h1>
+    <form id="filters" class="filters">
+        <label>
+            Date
+            <input type="date" name="date" th:value="${today}">
+        </label>
+        <label>
+            League ID
+            <input type="number" name="leagueId" min="1">
+        </label>
+        <label>
+            Status
+            <select name="status">
+                <option value="">Any</option>
+                <option value="SCHEDULED">Scheduled</option>
+                <option value="LIVE">Live</option>
+                <option value="FINAL">Final</option>
+            </select>
+        </label>
+        <button type="submit" class="btn">Apply</button>
+    </form>
+
+    <div id="games" class="list"></div>
+</main>
+
+<script>
+    const container = document.getElementById('games');
+    const filters = document.getElementById('filters');
+
+    async function loadGames(params = new URLSearchParams()) {
+        container.innerHTML = '<p>Loading…</p>';
+        const response = await fetch(`/api/v1/games?${params.toString()}`);
+        const json = await response.json();
+        container.innerHTML = '';
+        json.content.forEach(game => {
+            const card = document.createElement('article');
+            card.className = 'card';
+            card.innerHTML = `
+                <h3>${game.homeName} vs ${game.awayName}</h3>
+                <p>${game.status} · tip-off ${game.tipoff}</p>
+            `;
+            container.appendChild(card);
+        });
+        if (json.content.length === 0) {
+            container.innerHTML = '<p>No games found.</p>';
+        }
+    }
+
+    filters.addEventListener('submit', (event) => {
+        event.preventDefault();
+        const data = new FormData(filters);
+        const params = new URLSearchParams();
+        for (const [key, value] of data.entries()) {
+            if (value) {
+                params.append(key, value);
+            }
+        }
+        params.append('size', '20');
+        params.append('sort', 'tipoff,asc');
+        loadGames(params);
+    });
+
+    loadGames(new URLSearchParams({ date: filters.elements.namedItem('date').value }));
+</script>
+</body>
+</html>

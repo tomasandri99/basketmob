@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<body>
+<nav class="navbar">
+    <div class="navbar__brand">BasketMob</div>
+    <ul class="navbar__links">
+        <li><a th:href="@{/}">Home</a></li>
+        <li><a th:href="@{/games}">Fixtures</a></li>
+        <li><a th:href="@{/standings}">Standings</a></li>
+        <li th:if="${currentUser == null}"><a th:href="@{/login}">Sign in</a></li>
+        <li th:if="${currentUser == null}"><a th:href="@{/register}">Register</a></li>
+        <li th:if="${currentUser != null}"><a th:href="@{/dashboard}">Dashboard</a></li>
+    </ul>
+</nav>
+</body>
+</html>

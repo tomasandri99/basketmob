@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Standings · BasketMob</title>
+    <link rel="stylesheet" th:href="@{/css/styles.css}">
+</head>
+<body>
+<div th:replace="fragments/nav :: body"></div>
+
+<main class="page">
+    <h1>Standings</h1>
+    <form id="standings-form" class="filters">
+        <label>
+            League ID
+            <input type="number" name="leagueId" min="1" value="1" required>
+        </label>
+        <label>
+            Season
+            <input type="text" name="season" value="2025-2026">
+        </label>
+        <button type="submit" class="btn">Load</button>
+    </form>
+    <table class="table" id="standings-table">
+        <thead>
+        <tr>
+            <th>Team</th>
+            <th>W</th>
+            <th>L</th>
+            <th>GP</th>
+            <th>PF</th>
+            <th>PA</th>
+            <th>Win %</th>
+        </tr>
+        </thead>
+        <tbody></tbody>
+    </table>
+</main>
+
+<script>
+    const form = document.getElementById('standings-form');
+    const tbody = document.querySelector('#standings-table tbody');
+
+    async function loadStandings() {
+        const leagueId = form.elements.namedItem('leagueId').value;
+        const season = form.elements.namedItem('season').value;
+        const url = `/api/v1/leagues/${leagueId}/standings?season=${encodeURIComponent(season)}`;
+        const response = await fetch(url);
+        const data = await response.json();
+        tbody.innerHTML = '';
+        data.forEach(row => {
+            const tr = document.createElement('tr');
+            tr.innerHTML = `
+                <td>${row.teamName}</td>
+                <td>${row.wins}</td>
+                <td>${row.losses}</td>
+                <td>${row.gamesPlayed}</td>
+                <td>${row.pointsFor}</td>
+                <td>${row.pointsAgainst}</td>
+                <td>${(row.winPct * 100).toFixed(1)}%</td>
+            `;
+            tbody.appendChild(tr);
+        });
+    }
+
+    form.addEventListener('submit', (event) => {
+        event.preventDefault();
+        loadStandings();
+    });
+
+    loadStandings();
+</script>
+</body>
+</html>

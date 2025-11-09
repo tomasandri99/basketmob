@@ -1,5 +1,6 @@
 package is.hi.basketmob.service;
 
+import is.hi.basketmob.dto.UserSignupRequest;
 import is.hi.basketmob.dto.UserUpdateRequest;
 import is.hi.basketmob.entity.User;
 import is.hi.basketmob.repository.UserRepository;
@@ -24,6 +25,24 @@ public class UserService {
                        PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
+    }
+
+    @Transactional
+    public User register(UserSignupRequest req) {
+        String email = req.getEmail().trim().toLowerCase();
+        userRepository.findByEmail(email).ifPresent(u -> {
+            throw new ResponseStatusException(HttpStatus.CONFLICT, "Email already in use");
+        });
+
+        OffsetDateTime now = OffsetDateTime.now(ZoneOffset.UTC);
+        User user = new User();
+        user.setEmail(email);
+        user.setPassword(passwordEncoder.encode(req.getPassword()));
+        user.setDisplayName(req.getDisplayName().trim());
+        user.setAdmin(userRepository.count() == 0);
+        user.setCreatedAt(now);
+        user.setUpdatedAt(now);
+        return userRepository.save(user);
     }
 
     /**
@@ -84,6 +103,10 @@ public class UserService {
     public User findByEmail(String email) {
         return userRepository.findByEmail(email)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "USER_NOT_FOUND"));
+    }
+
+    public Optional<User> findOptionalByEmail(String email) {
+        return userRepository.findByEmail(email);
     }
 
     @Transactional(readOnly = true)

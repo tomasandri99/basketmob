@@ -1,0 +1,58 @@
+{
+  "leagues": [
+    {
+      "name": "Dominos League",
+      "season": "2025-2026",
+      "teams": [
+        { "name": "Valur", "shortName": "VAL", "city": "Reykjavík", "logo": "https://example.com/valur.png" },
+        { "name": "KR", "shortName": "KR", "city": "Reykjavík", "logo": "https://example.com/kr.png" },
+        { "name": "Keflavík", "shortName": "KEF", "city": "Keflavík", "logo": "https://example.com/kef.png" },
+        { "name": "Njarðvík", "shortName": "NJA", "city": "Njarðvík", "logo": "https://example.com/nja.png" },
+        { "name": "Stjarnan", "shortName": "STJ", "city": "Garðabær", "logo": "https://example.com/stj.png" },
+        { "name": "Grindavík", "shortName": "GRI", "city": "Grindavík", "logo": "https://example.com/gri.png" }
+      ],
+      "games": [
+        {
+          "home": "Valur",
+          "away": "KR",
+          "tipoff": "2025-11-13T19:30:00",
+          "status": "SCHEDULED",
+          "homeScore": null,
+          "awayScore": null
+        },
+        {
+          "home": "Keflavík",
+          "away": "Njarðvík",
+          "tipoff": "2025-11-14T19:15:00",
+          "status": "SCHEDULED",
+          "homeScore": null,
+          "awayScore": null
+        },
+        {
+          "home": "Stjarnan",
+          "away": "Grindavík",
+          "tipoff": "2025-11-15T18:00:00",
+          "status": "SCHEDULED",
+          "homeScore": null,
+          "awayScore": null
+        },
+        {
+          "home": "KR",
+          "away": "Valur",
+          "tipoff": "2025-11-20T19:30:00",
+          "status": "SCHEDULED",
+          "homeScore": null,
+          "awayScore": null
+        },
+        {
+          "home": "Keflavík",
+          "away": "KR",
+          "tipoff": "2025-12-04T19:30:00",
+          "status": "FINAL",
+          "homeScore": 88,
+          "awayScore": 81
+        }
+      ]
+    }
+  ]
+}

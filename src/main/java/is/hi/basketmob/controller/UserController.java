@@ -1,16 +1,19 @@
 package is.hi.basketmob.controller;
 
 import is.hi.basketmob.dto.UserResponse;
+import is.hi.basketmob.dto.UserSignupRequest;
 import is.hi.basketmob.dto.UserUpdateRequest;
 import is.hi.basketmob.mapper.UserMapper;
 import is.hi.basketmob.security.AuthenticatedUser;
 import is.hi.basketmob.service.UserService;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -26,6 +29,12 @@ public class UserController {
 
     public UserController(UserService userService) {
         this.userService = userService;
+    }
+
+    @PostMapping
+    public ResponseEntity<UserResponse> register(@Valid @RequestBody UserSignupRequest body) {
+        return ResponseEntity.status(HttpStatus.CREATED)
+                .body(UserMapper.toResponse(userService.register(body)));
     }
 
     @PutMapping("/{id}")

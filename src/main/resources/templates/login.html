@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Sign in · BasketMob</title>
+    <link rel="stylesheet" th:href="@{/css/styles.css}">
+</head>
+<body>
+<div th:replace="fragments/nav :: body"></div>
+<main class="page auth">
+    <h1>Sign in</h1>
+    <form th:action="@{/login}" method="post" th:object="${loginForm}" class="form">
+        <label>Email
+            <input type="email" th:field="*{email}" required>
+        </label>
+        <label>Password
+            <input type="password" th:field="*{password}" required>
+        </label>
+        <button type="submit" class="btn">Sign in</button>
+    </form>
+</main>
+</body>
+</html>

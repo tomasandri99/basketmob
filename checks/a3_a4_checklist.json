@@ -1,0 +1,213 @@
+{
+  "meta": {
+    "project": "BasketMob",
+    "repo": "https://github.com/tomasandri99/basketmob",
+    "api_version_prefix": "/api/v1",
+    "course_refs": {
+      "A3_due": "Oct 19",
+      "A4_due": "Nov 9",
+      "grading_A3": "progress 75%, awareness 15%, code quality 10%"
+    }
+  },
+  "submission_requirements": {
+    "a3": [
+      "Canvas includes GitHub repo link",
+      "Repo shows second-iteration code merged to main or develop",
+      "Brief status/progress/exceptions notes present (README or RELEASE_NOTES.md)"
+    ],
+    "a4": [
+      "Canvas includes GitHub repo link",
+      "Repo shows third-iteration code merged to main or develop",
+      "Brief status/progress/exceptions notes present"
+    ]
+  },
+  "architecture_checks": [
+    "Controllers only delegate to Services (no direct Repository calls)",
+    "Services encapsulate business logic (technology-agnostic)",
+    "Repositories are Spring Data components handling persistence",
+    "DTOs + validation annotations used on request models where appropriate"
+  ],
+  "security_checks": [
+    "Protected routes require auth: /users/me, /users/{id}/favorites*, PUT/PATCH /users/{id}, DELETE /users/{id}",
+    "No PII in logs",
+    "Auth flow implemented for login and propagation (session or JWT)"
+  ],
+  "api_conventions": [
+    "All endpoints under /api/v1",
+    "Timestamps are ISO-8601 UTC",
+    "Pagination params: page (0-based), size (default 20, max 100), sort (e.g., tipoff,asc)",
+    "Filters additive: date, dateFrom, dateTo, leagueId, status",
+    "Errors use JSON {code,message,details?} with correct HTTP status"
+  ],
+  "non_functional": [
+    "List endpoints use caching; cached reads target P95 < 500ms",
+    "Seed/ingest present; responses indicate stale=true when data may be out-of-date",
+    "Tests pass locally (unit/service/controller slice and/or integration)"
+  ],
+  "endpoints_expected_a3": [
+    "POST /api/v1/users",
+    "POST /api/v1/auth/login",
+    "GET /api/v1/games?date=YYYY-MM-DD&page=&size=&sort=&leagueId=&status=&dateFrom=&dateTo=",
+    "GET /api/v1/games/{id}",
+    "GET /api/v1/leagues/{id}/standings?season=YYYY",
+    "GET /api/v1/search",
+    "GET /api/v1/users/me",
+    "POST /api/v1/users/{id}/favorites",
+    "DELETE /api/v1/users/{id}/favorites/{teamId}",
+    "PUT /api/v1/users/{id}",
+    "PATCH /api/v1/users/{id}",
+    "DELETE /api/v1/users/{id}"
+  ],
+  "acceptance_samples": {
+    "UC1_GameDetails": [
+      "GET /api/v1/games/{id} with valid id → 200 and JSON contains header, perPeriod, teamTotals, leaders, lastUpdated",
+      "GET /api/v1/games/{id} with missing id → 404 and code == \"GAME_NOT_FOUND\"",
+      "Cached read responds within 500ms on dev machine"
+    ],
+    "UC3_FixturesByDate": [
+      "GET /api/v1/games?date=YYYY-MM-DD → 200 with page sorted by tipoff",
+      "Invalid date → 400 with validation message",
+      "Supports page,size,sort and additive filters: leagueId,status,dateFrom,dateTo"
+    ],
+    "UC2_Follow": [
+      "POST /api/v1/users/{userId}/favorites with teamId (auth) → 201 and resource returned",
+      "Duplicate favorite → 200 equivalent existing resource"
+    ],
+    "UC6_Unfollow": [
+      "DELETE /api/v1/users/{id}/favorites/{teamId} (auth) → 204"
+    ],
+    "UC13_Profile": [
+      "GET /api/v1/users/me (auth) → 200 with current user profile"
+    ]
+  },
+  "files_docs_ci": [
+    "README includes run instructions (profiles for H2 tests, Postgres dev/prod), env vars clearly documented",
+    "OpenAPI available (UI and/or YAML/JSON) and linked in README",
+    "Basic CI runs build + tests",
+    "Error-handling guide (status codes, error schema) documented"
+  ],
+  "a3_done_when": [
+    "All endpoints in endpoints_expected_a3 implemented and reachable",
+    "Acceptance samples pass",
+    "Submission + presentation requirements satisfied"
+  ],
+  "hardening_expected_a4": [
+    "Input validation in controllers/DTOs (dates, enums, ids) with proper 400 responses",
+    "Rate limiting in place for selected endpoints",
+    "Refined pagination + additive filter behavior documented and tested",
+    "Contracts stabilized; no breaking changes without versioning",
+    "Docs polished; seed test data; acceptance checklist committed",
+    "OpenAPI finalized (models, examples, error responses complete)",
+    "Optional tiny demo client exists OR omitted with rationale in notes",
+    "Security review: protected routes verified; logging scrubbed for PII"
+  ],
+  "a4_done_when": [
+    "All hardening_expected_a4 items satisfied",
+    "Submission + presentation requirements satisfied"
+  ],
+  "autotest_matrix": [
+    {
+      "name": "Auth_Register",
+      "method": "POST",
+      "path": "/api/v1/users",
+      "body_keys_required": [
+        "email",
+        "password"
+      ],
+      "expect_status": 201
+    },
+    {
+      "name": "Auth_Login",
+      "method": "POST",
+      "path": "/api/v1/auth/login",
+      "body_keys_required": [
+        "email",
+        "password"
+      ],
+      "expect_status": 200,
+      "expect_auth_token_or_session": true
+    },
+    {
+      "name": "Fixtures_ByDate_Minimal",
+      "method": "GET",
+      "path": "/api/v1/games?date=2025-01-01&page=0&size=20&sort=tipoff,asc",
+      "expect_status": 200,
+      "expect_json_keys": [
+        "content",
+        "pageable",
+        "totalElements"
+      ]
+    },
+    {
+      "name": "Fixtures_WithFilters",
+      "method": "GET",
+      "path": "/api/v1/games?dateFrom=2025-01-01&dateTo=2025-01-31&leagueId=1&status=FINAL&page=0&size=10",
+      "expect_status": 200
+    },
+    {
+      "name": "Game_Details_Valid",
+      "method": "GET",
+      "path": "/api/v1/games/TEST_ID",
+      "expect_status": 200,
+      "expect_json_keys": [
+        "homeTeam",
+        "awayTeam",
+        "status"
+      ]
+    },
+    {
+      "name": "Game_Details_Missing",
+      "method": "GET",
+      "path": "/api/v1/games/__nonexistent__",
+      "expect_status": 404,
+      "expect_error_code": "GAME_NOT_FOUND"
+    },
+    {
+      "name": "Profile_RequiresAuth",
+      "method": "GET",
+      "path": "/api/v1/users/me",
+      "requires_auth": true,
+      "expect_status": 200
+    },
+    {
+      "name": "Follow_Idempotent",
+      "method": "POST",
+      "path": "/api/v1/me/favorites",
+      "requires_auth": true,
+      "body_keys_required": [
+        "teamId"
+      ],
+      "expect_status_any_of": [
+        201,
+        200
+      ]
+    },
+    {
+      "name": "Unfollow",
+      "method": "DELETE",
+      "path": "/api/v1/me/favorites/TEST_TEAM",
+      "requires_auth": true,
+      "expect_status_any_of": [
+        204,
+        200
+      ]
+    },
+    {
+      "name": "Account_Update_Put",
+      "method": "PUT",
+      "path": "/api/v1/users/SELF_ID",
+      "requires_auth": true,
+      "expect_status": 200
+    },
+    {
+      "name": "Account_Delete",
+      "method": "DELETE",
+      "path": "/api/v1/users/SELF_ID",
+      "requires_auth": true,
+      "expect_status_any_of": [
+        204,
+        200
+      ]
+    }
+  ]
+}
