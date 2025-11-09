@@ -1,5 +1,6 @@
 package is.hi.basketmob.service;
 
+import is.hi.basketmob.dto.UserSignupRequest;
 import is.hi.basketmob.dto.UserUpdateRequest;
 import is.hi.basketmob.entity.User;
 import is.hi.basketmob.repository.UserRepository;
@@ -14,7 +15,6 @@ import java.time.ZoneOffset;
 import java.util.Objects;
 import java.util.Optional;
 
-
 @Service
 public class UserService {
 
@@ -25,6 +25,24 @@ public class UserService {
                        PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
+    }
+
+    @Transactional
+    public User register(UserSignupRequest req) {
+        String email = req.getEmail().trim().toLowerCase();
+        userRepository.findByEmail(email).ifPresent(u -> {
+            throw new ResponseStatusException(HttpStatus.CONFLICT, "Email already in use");
+        });
+
+        OffsetDateTime now = OffsetDateTime.now(ZoneOffset.UTC);
+        User user = new User();
+        user.setEmail(email);
+        user.setPassword(passwordEncoder.encode(req.getPassword()));
+        user.setDisplayName(req.getDisplayName().trim());
+        user.setAdmin(userRepository.count() == 0);
+        user.setCreatedAt(now);
+        user.setUpdatedAt(now);
+        return userRepository.save(user);
     }
 
     /**
@@ -44,31 +62,22 @@ public class UserService {
                            boolean actorIsAdmin,
                            boolean isPut) {
 
-
-        if (!(actorIsAdmin || Objects.equals(actorUserId, id))) {
-            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "You cannot modify this account");
-        }
-
+        enforceOwnership(actorUserId, actorIsAdmin, id);
 
         User user = userRepository.findById(id)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found"));
 
-
         validateRequest(req);
 
-
         if (isPut) {
-
             user.setDisplayName(req.getDisplayName());
             user.setAvatarUrl(req.getAvatarUrl());
             user.setGender(req.getGender());
         } else {
-
             if (req.getDisplayName() != null) user.setDisplayName(req.getDisplayName());
             if (req.getAvatarUrl() != null)   user.setAvatarUrl(req.getAvatarUrl());
             if (req.getGender() != null)      user.setGender(req.getGender());
         }
-
 
         if (req.getNewPassword() != null) {
             if (req.getCurrentPassword() == null ||
@@ -78,36 +87,42 @@ public class UserService {
             user.setPassword(passwordEncoder.encode(req.getNewPassword()));
         }
 
-
         user.setUpdatedAt(OffsetDateTime.now(ZoneOffset.UTC));
-
 
         return userRepository.save(user);
     }
+
     @Transactional
     public void deleteUser(Long id, Long actorUserId, boolean actorIsAdmin) {
-        if (!(actorIsAdmin || Objects.equals(actorUserId, id))) {
-            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "You cannot delete this account");
-        }
+        enforceOwnership(actorUserId, actorIsAdmin, id);
         var user = userRepository.findById(id)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found"));
         userRepository.delete(user);
     }
+
     public User findByEmail(String email) {
         return userRepository.findByEmail(email)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "USER_NOT_FOUND"));
     }
 
+    public Optional<User> findOptionalByEmail(String email) {
+        return userRepository.findByEmail(email);
+    }
+
+    @Transactional(readOnly = true)
+    public User findById(Long id) {
+        return userRepository.findById(id)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "USER_NOT_FOUND"));
+    }
 
     private void validateRequest(UserUpdateRequest req) {
 
         Optional.ofNullable(req.getDisplayName()).ifPresent(name -> {
             int len = name.trim().length();
             if (len < 2 || len > 50) {
-                throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "displayName must be 2–50 characters");
+                throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "displayName must be 2-50 characters");
             }
         });
-
 
         Optional.ofNullable(req.getAvatarUrl()).ifPresent(url -> {
             if (!url.matches("^(https?://).+")) {
@@ -115,18 +130,16 @@ public class UserService {
             }
         });
 
-
         Optional.ofNullable(req.getGender()).ifPresent(g -> {
             if (!g.matches("^(male|female|other)$")) {
                 throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "gender must be one of: male, female, other");
             }
         });
 
-
         Optional.ofNullable(req.getNewPassword()).ifPresent(pw -> {
             int len = pw.length();
             if (len < 8 || len > 200) {
-                throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "newPassword must be 8–200 characters");
+                throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "newPassword must be 8-200 characters");
             }
 
             if (req.getCurrentPassword() == null || req.getCurrentPassword().isBlank()) {
@@ -135,5 +148,10 @@ public class UserService {
 
         });
     }
-}
 
+    private void enforceOwnership(Long actorUserId, boolean actorIsAdmin, Long targetUserId) {
+        if (!(actorIsAdmin || Objects.equals(actorUserId, targetUserId))) {
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "You cannot modify this account");
+        }
+    }
+}

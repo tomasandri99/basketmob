@@ -1,0 +1,932 @@
+{
+  "leagues": [
+    {
+      "name": "Bónus deild karla",
+      "season": "2025-2026",
+      "teams": [
+        {
+          "name": "Álftanes",
+          "shortName": "ALF",
+          "city": "Álftanes",
+          "logo": "https://cdn.basketmob.is/logos/alf.png"
+        },
+        {
+          "name": "Ármann",
+          "shortName": "ARM",
+          "city": "Reykjavík",
+          "logo": "https://cdn.basketmob.is/logos/arm.png"
+        },
+        {
+          "name": "KR",
+          "shortName": "KR",
+          "city": "Reykjavík",
+          "logo": "https://cdn.basketmob.is/logos/kr.png"
+        },
+        {
+          "name": "Stjarnan",
+          "shortName": "STJ",
+          "city": "Garðabær",
+          "logo": "https://cdn.basketmob.is/logos/stj.png"
+        },
+        {
+          "name": "Keflavík",
+          "shortName": "KEF",
+          "city": "Keflavík",
+          "logo": "https://cdn.basketmob.is/logos/kef.png"
+        },
+        {
+          "name": "ÍR",
+          "shortName": "IR",
+          "city": "Reykjavík",
+          "logo": "https://cdn.basketmob.is/logos/ir.png"
+        },
+        {
+          "name": "ÍA",
+          "shortName": "IA",
+          "city": "Akranes",
+          "logo": "https://cdn.basketmob.is/logos/ia.png"
+        },
+        {
+          "name": "Þór Þ.",
+          "shortName": "THOR",
+          "city": "Þorlákshöfn",
+          "logo": "https://cdn.basketmob.is/logos/thor.png"
+        },
+        {
+          "name": "Grindavík",
+          "shortName": "GRI",
+          "city": "Grindavík",
+          "logo": "https://cdn.basketmob.is/logos/gri.png"
+        },
+        {
+          "name": "Njarðvík",
+          "shortName": "NJA",
+          "city": "Njarðvík",
+          "logo": "https://cdn.basketmob.is/logos/nja.png"
+        },
+        {
+          "name": "Valur",
+          "shortName": "VAL",
+          "city": "Reykjavík",
+          "logo": "https://cdn.basketmob.is/logos/val.png"
+        },
+        {
+          "name": "Tindastóll",
+          "shortName": "TIN",
+          "city": "Sauðárkrókur",
+          "logo": "https://cdn.basketmob.is/logos/tin.png"
+        }
+      ],
+      "games": [
+        {
+          "home": "Álftanes",
+          "away": "Ármann",
+          "tipoff": "2025-10-02T19:15:00",
+          "status": "FINAL",
+          "homeScore": 121,
+          "awayScore": 69
+        },
+        {
+          "home": "KR",
+          "away": "Stjarnan",
+          "tipoff": "2025-10-02T19:15:00",
+          "status": "FINAL",
+          "homeScore": 102,
+          "awayScore": 98
+        },
+        {
+          "home": "Keflavík",
+          "away": "ÍR",
+          "tipoff": "2025-10-02T19:15:00",
+          "status": "FINAL",
+          "homeScore": 92,
+          "awayScore": 83
+        },
+        {
+          "home": "ÍA",
+          "away": "Þór Þ.",
+          "tipoff": "2025-10-02T19:15:00",
+          "status": "FINAL",
+          "homeScore": 102,
+          "awayScore": 92
+        },
+        {
+          "home": "Grindavík",
+          "away": "Njarðvík",
+          "tipoff": "2025-10-03T19:15:00",
+          "status": "FINAL",
+          "homeScore": 109,
+          "awayScore": 96
+        },
+        {
+          "home": "Valur",
+          "away": "Tindastóll",
+          "tipoff": "2025-10-06T19:15:00",
+          "status": "FINAL",
+          "homeScore": 85,
+          "awayScore": 87
+        },
+        {
+          "home": "Tindastóll",
+          "away": "Keflavík",
+          "tipoff": "2025-10-09T19:15:00",
+          "status": "FINAL",
+          "homeScore": 101,
+          "awayScore": 81
+        },
+        {
+          "home": "Ármann",
+          "away": "KR",
+          "tipoff": "2025-10-09T19:15:00",
+          "status": "FINAL",
+          "homeScore": 89,
+          "awayScore": 115
+        },
+        {
+          "home": "Þór Þ.",
+          "away": "Álftanes",
+          "tipoff": "2025-10-09T19:15:00",
+          "status": "FINAL",
+          "homeScore": 70,
+          "awayScore": 89
+        },
+        {
+          "home": "Grindavík",
+          "away": "ÍA",
+          "tipoff": "2025-10-09T19:15:00",
+          "status": "FINAL",
+          "homeScore": 116,
+          "awayScore": 99
+        },
+        {
+          "home": "Njarðvík",
+          "away": "ÍR",
+          "tipoff": "2025-10-11T19:00:00",
+          "status": "FINAL",
+          "homeScore": 100,
+          "awayScore": 102
+        },
+        {
+          "home": "Stjarnan",
+          "away": "Valur",
+          "tipoff": "2025-10-11T19:30:00",
+          "status": "FINAL",
+          "homeScore": 94,
+          "awayScore": 91
+        },
+        {
+          "home": "ÍA",
+          "away": "Njarðvík",
+          "tipoff": "2025-10-16T19:15:00",
+          "status": "FINAL",
+          "homeScore": 119,
+          "awayScore": 130
+        },
+        {
+          "home": "Valur",
+          "away": "Ármann",
+          "tipoff": "2025-10-16T19:15:00",
+          "status": "FINAL",
+          "homeScore": 94,
+          "awayScore": 83
+        },
+        {
+          "home": "Álftanes",
+          "away": "Grindavík",
+          "tipoff": "2025-10-16T19:15:00",
+          "status": "FINAL",
+          "homeScore": 70,
+          "awayScore": 79
+        },
+        {
+          "home": "KR",
+          "away": "Þór Þ.",
+          "tipoff": "2025-10-16T19:15:00",
+          "status": "FINAL",
+          "homeScore": 95,
+          "awayScore": 75
+        },
+        {
+          "home": "ÍR",
+          "away": "Tindastóll",
+          "tipoff": "2025-10-17T19:00:00",
+          "status": "FINAL",
+          "homeScore": 67,
+          "awayScore": 113
+        },
+        {
+          "home": "Keflavík",
+          "away": "Stjarnan",
+          "tipoff": "2025-10-17T19:30:00",
+          "status": "FINAL",
+          "homeScore": 92,
+          "awayScore": 71
+        },
+        {
+          "home": "Ármann",
+          "away": "Keflavík",
+          "tipoff": "2025-10-23T19:15:00",
+          "status": "FINAL",
+          "homeScore": 94,
+          "awayScore": 107
+        },
+        {
+          "home": "Þór Þ.",
+          "away": "Valur",
+          "tipoff": "2025-10-23T19:15:00",
+          "status": "FINAL",
+          "homeScore": 117,
+          "awayScore": 119
+        },
+        {
+          "home": "Grindavík",
+          "away": "KR",
+          "tipoff": "2025-10-23T19:15:00",
+          "status": "FINAL",
+          "homeScore": 78,
+          "awayScore": 77
+        },
+        {
+          "home": "Njarðvík",
+          "away": "Tindastóll",
+          "tipoff": "2025-10-23T19:15:00",
+          "status": "FINAL",
+          "homeScore": 98,
+          "awayScore": 90
+        },
+        {
+          "home": "Stjarnan",
+          "away": "ÍR",
+          "tipoff": "2025-10-24T19:00:00",
+          "status": "FINAL",
+          "homeScore": 91,
+          "awayScore": 93
+        },
+        {
+          "home": "ÍA",
+          "away": "Álftanes",
+          "tipoff": "2025-10-24T19:30:00",
+          "status": "FINAL",
+          "homeScore": 76,
+          "awayScore": 74
+        },
+        {
+          "home": "KR",
+          "away": "ÍA",
+          "tipoff": "2025-10-30T19:15:00",
+          "status": "FINAL",
+          "homeScore": 109,
+          "awayScore": 75
+        },
+        {
+          "home": "Álftanes",
+          "away": "Njarðvík",
+          "tipoff": "2025-10-30T19:15:00",
+          "status": "FINAL",
+          "homeScore": 93,
+          "awayScore": 92
+        },
+        {
+          "home": "Keflavík",
+          "away": "Þór Þ.",
+          "tipoff": "2025-10-30T19:15:00",
+          "status": "FINAL",
+          "homeScore": 86,
+          "awayScore": 82
+        },
+        {
+          "home": "Valur",
+          "away": "Grindavík",
+          "tipoff": "2025-10-30T19:15:00",
+          "status": "FINAL",
+          "homeScore": 55,
+          "awayScore": 90
+        },
+        {
+          "home": "ÍR",
+          "away": "Ármann",
+          "tipoff": "2025-10-31T19:00:00",
+          "status": "FINAL",
+          "homeScore": 96,
+          "awayScore": 83
+        },
+        {
+          "home": "Tindastóll",
+          "away": "Stjarnan",
+          "tipoff": "2025-10-31T19:30:00",
+          "status": "FINAL",
+          "homeScore": 96,
+          "awayScore": 95
+        },
+        {
+          "home": "Þór Þ.",
+          "away": "ÍR",
+          "tipoff": "2025-11-06T19:15:00",
+          "status": "FINAL",
+          "homeScore": 100,
+          "awayScore": 98
+        },
+        {
+          "home": "ÍA",
+          "away": "Valur",
+          "tipoff": "2025-11-06T19:15:00",
+          "status": "FINAL",
+          "homeScore": 81,
+          "awayScore": 83
+        },
+        {
+          "home": "Álftanes",
+          "away": "KR",
+          "tipoff": "2025-11-06T19:15:00",
+          "status": "FINAL",
+          "homeScore": 108,
+          "awayScore": 89
+        },
+        {
+          "home": "Njarðvík",
+          "away": "Stjarnan",
+          "tipoff": "2025-11-06T19:15:00",
+          "status": "FINAL",
+          "homeScore": 101,
+          "awayScore": 105
+        },
+        {
+          "home": "Keflavík",
+          "away": "ÍA",
+          "tipoff": "2025-11-13T19:30:00",
+          "status": "SCHEDULED"
+        },
+        {
+          "home": "ÍR",
+          "away": "Grindavík",
+          "tipoff": "2025-11-13T19:30:00",
+          "status": "SCHEDULED"
+        },
+        {
+          "home": "Stjarnan",
+          "away": "Ármann",
+          "tipoff": "2025-11-13T19:30:00",
+          "status": "SCHEDULED"
+        },
+        {
+          "home": "KR",
+          "away": "Njarðvík",
+          "tipoff": "2025-11-13T19:30:00",
+          "status": "SCHEDULED"
+        },
+        {
+          "home": "Tindastóll",
+          "away": "Þór Þ.",
+          "tipoff": "2025-11-14T19:00:00",
+          "status": "SCHEDULED"
+        },
+        {
+          "home": "Valur",
+          "away": "Álftanes",
+          "tipoff": "2025-11-14T19:30:00",
+          "status": "SCHEDULED"
+        },
+        {
+          "home": "Þór Þ.",
+          "away": "Stjarnan",
+          "tipoff": "2025-11-20T19:15:00",
+          "status": "SCHEDULED"
+        },
+        {
+          "home": "Grindavík",
+          "away": "Tindastóll",
+          "tipoff": "2025-11-20T19:15:00",
+          "status": "SCHEDULED"
+        },
+        {
+          "home": "KR",
+          "away": "Valur",
+          "tipoff": "2025-11-20T19:15:00",
+          "status": "SCHEDULED"
+        },
+        {
+          "home": "Njarðvík",
+          "away": "Ármann",
+          "tipoff": "2025-11-20T19:15:00",
+          "status": "SCHEDULED"
+        },
+        {
+          "home": "ÍA",
+          "away": "ÍR",
+          "tipoff": "2025-11-21T19:00:00",
+          "status": "SCHEDULED"
+        },
+        {
+          "home": "Keflavík",
+          "away": "Álftanes",
+          "tipoff": "2025-11-21T19:00:00",
+          "status": "SCHEDULED"
+        },
+        {
+          "home": "ÍR",
+          "away": "Álftanes",
+          "tipoff": "2025-12-05T19:15:00",
+          "status": "SCHEDULED"
+        },
+        {
+          "home": "Valur",
+          "away": "Njarðvík",
+          "tipoff": "2025-12-05T19:15:00",
+          "status": "SCHEDULED"
+        },
+        {
+          "home": "Tindastóll",
+          "away": "ÍA",
+          "tipoff": "2025-12-05T19:15:00",
+          "status": "SCHEDULED"
+        },
+        {
+          "home": "Keflavík",
+          "away": "KR",
+          "tipoff": "2025-12-05T19:15:00",
+          "status": "SCHEDULED"
+        },
+        {
+          "home": "Ármann",
+          "away": "Þór Þ.",
+          "tipoff": "2025-12-06T19:00:00",
+          "status": "SCHEDULED"
+        },
+        {
+          "home": "Stjarnan",
+          "away": "Grindavík",
+          "tipoff": "2025-12-06T19:30:00",
+          "status": "SCHEDULED"
+        },
+        {
+          "home": "Grindavík",
+          "away": "Ármann",
+          "tipoff": "2025-12-11T19:15:00",
+          "status": "SCHEDULED"
+        },
+        {
+          "home": "ÍA",
+          "away": "Stjarnan",
+          "tipoff": "2025-12-11T19:15:00",
+          "status": "SCHEDULED"
+        },
+        {
+          "home": "KR",
+          "away": "ÍR",
+          "tipoff": "2025-12-11T19:15:00",
+          "status": "SCHEDULED"
+        },
+        {
+          "home": "Valur",
+          "away": "Keflavík",
+          "tipoff": "2025-12-11T19:15:00",
+          "status": "SCHEDULED"
+        },
+        {
+          "home": "Njarðvík",
+          "away": "Þór Þ.",
+          "tipoff": "2025-12-12T19:00:00",
+          "status": "SCHEDULED"
+        },
+        {
+          "home": "Álftanes",
+          "away": "Tindastóll",
+          "tipoff": "2025-12-12T19:30:00",
+          "status": "SCHEDULED"
+        },
+        {
+          "home": "Tindastóll",
+          "away": "KR",
+          "tipoff": "2025-12-18T19:15:00",
+          "status": "SCHEDULED"
+        },
+        {
+          "home": "Keflavík",
+          "away": "Njarðvík",
+          "tipoff": "2025-12-18T19:15:00",
+          "status": "SCHEDULED"
+        },
+        {
+          "home": "Þór Þ.",
+          "away": "Grindavík",
+          "tipoff": "2025-12-18T19:15:00",
+          "status": "SCHEDULED"
+        },
+        {
+          "home": "ÍR",
+          "away": "Valur",
+          "tipoff": "2025-12-18T19:15:00",
+          "status": "SCHEDULED"
+        },
+        {
+          "home": "Ármann",
+          "away": "ÍA",
+          "tipoff": "2025-12-19T19:00:00",
+          "status": "SCHEDULED"
+        },
+        {
+          "home": "Stjarnan",
+          "away": "Álftanes",
+          "tipoff": "2025-12-19T19:30:00",
+          "status": "SCHEDULED"
+        },
+        {
+          "home": "Þór Þ.",
+          "away": "ÍA",
+          "tipoff": "2026-01-03T19:15:00",
+          "status": "SCHEDULED"
+        },
+        {
+          "home": "Ármann",
+          "away": "Álftanes",
+          "tipoff": "2026-01-03T19:15:00",
+          "status": "SCHEDULED"
+        },
+        {
+          "home": "Stjarnan",
+          "away": "KR",
+          "tipoff": "2026-01-03T19:15:00",
+          "status": "SCHEDULED"
+        },
+        {
+          "home": "Tindastóll",
+          "away": "Valur",
+          "tipoff": "2026-01-03T19:15:00",
+          "status": "SCHEDULED"
+        },
+        {
+          "home": "ÍR",
+          "away": "Keflavík",
+          "tipoff": "2026-01-04T19:00:00",
+          "status": "SCHEDULED"
+        },
+        {
+          "home": "Njarðvík",
+          "away": "Grindavík",
+          "tipoff": "2026-01-04T19:30:00",
+          "status": "SCHEDULED"
+        },
+        {
+          "home": "KR",
+          "away": "Ármann",
+          "tipoff": "2026-01-08T19:15:00",
+          "status": "SCHEDULED"
+        },
+        {
+          "home": "ÍR",
+          "away": "Njarðvík",
+          "tipoff": "2026-01-08T19:15:00",
+          "status": "SCHEDULED"
+        },
+        {
+          "home": "ÍA",
+          "away": "Grindavík",
+          "tipoff": "2026-01-08T19:15:00",
+          "status": "SCHEDULED"
+        },
+        {
+          "home": "Álftanes",
+          "away": "Þór Þ.",
+          "tipoff": "2026-01-08T19:15:00",
+          "status": "SCHEDULED"
+        },
+        {
+          "home": "Valur",
+          "away": "Stjarnan",
+          "tipoff": "2026-01-09T19:15:00",
+          "status": "SCHEDULED"
+        },
+        {
+          "home": "Þór Þ.",
+          "away": "KR",
+          "tipoff": "2026-01-15T19:15:00",
+          "status": "SCHEDULED"
+        },
+        {
+          "home": "Ármann",
+          "away": "Valur",
+          "tipoff": "2026-01-15T19:15:00",
+          "status": "SCHEDULED"
+        },
+        {
+          "home": "Stjarnan",
+          "away": "Keflavík",
+          "tipoff": "2026-01-15T19:15:00",
+          "status": "SCHEDULED"
+        },
+        {
+          "home": "Tindastóll",
+          "away": "ÍR",
+          "tipoff": "2026-01-15T19:15:00",
+          "status": "SCHEDULED"
+        },
+        {
+          "home": "Njarðvík",
+          "away": "ÍA",
+          "tipoff": "2026-01-16T19:00:00",
+          "status": "SCHEDULED"
+        },
+        {
+          "home": "Grindavík",
+          "away": "Álftanes",
+          "tipoff": "2026-01-16T19:30:00",
+          "status": "SCHEDULED"
+        },
+        {
+          "home": "Álftanes",
+          "away": "ÍA",
+          "tipoff": "2026-01-22T19:15:00",
+          "status": "SCHEDULED"
+        },
+        {
+          "home": "ÍR",
+          "away": "Stjarnan",
+          "tipoff": "2026-01-22T19:15:00",
+          "status": "SCHEDULED"
+        },
+        {
+          "home": "Valur",
+          "away": "Þór Þ.",
+          "tipoff": "2026-01-22T19:15:00",
+          "status": "SCHEDULED"
+        },
+        {
+          "home": "Keflavík",
+          "away": "Ármann",
+          "tipoff": "2026-01-22T19:15:00",
+          "status": "SCHEDULED"
+        },
+        {
+          "home": "Tindastóll",
+          "away": "Njarðvík",
+          "tipoff": "2026-01-23T19:00:00",
+          "status": "SCHEDULED"
+        },
+        {
+          "home": "KR",
+          "away": "Grindavík",
+          "tipoff": "2026-01-23T19:30:00",
+          "status": "SCHEDULED"
+        },
+        {
+          "home": "Keflavík",
+          "away": "Tindastóll",
+          "tipoff": "2026-01-26T19:15:00",
+          "status": "SCHEDULED"
+        },
+        {
+          "home": "ÍA",
+          "away": "KR",
+          "tipoff": "2026-01-29T19:15:00",
+          "status": "SCHEDULED"
+        },
+        {
+          "home": "Grindavík",
+          "away": "Valur",
+          "tipoff": "2026-01-29T19:15:00",
+          "status": "SCHEDULED"
+        },
+        {
+          "home": "Ármann",
+          "away": "ÍR",
+          "tipoff": "2026-01-29T19:15:00",
+          "status": "SCHEDULED"
+        },
+        {
+          "home": "Njarðvík",
+          "away": "Álftanes",
+          "tipoff": "2026-01-29T19:15:00",
+          "status": "SCHEDULED"
+        },
+        {
+          "home": "Þór Þ.",
+          "away": "Keflavík",
+          "tipoff": "2026-01-30T19:00:00",
+          "status": "SCHEDULED"
+        },
+        {
+          "home": "Stjarnan",
+          "away": "Tindastóll",
+          "tipoff": "2026-01-30T19:30:00",
+          "status": "SCHEDULED"
+        },
+        {
+          "home": "KR",
+          "away": "Álftanes",
+          "tipoff": "2026-02-12T19:15:00",
+          "status": "SCHEDULED"
+        },
+        {
+          "home": "Stjarnan",
+          "away": "Njarðvík",
+          "tipoff": "2026-02-12T19:15:00",
+          "status": "SCHEDULED"
+        },
+        {
+          "home": "Valur",
+          "away": "ÍA",
+          "tipoff": "2026-02-12T19:15:00",
+          "status": "SCHEDULED"
+        },
+        {
+          "home": "ÍR",
+          "away": "Þór Þ.",
+          "tipoff": "2026-02-12T19:15:00",
+          "status": "SCHEDULED"
+        },
+        {
+          "home": "Tindastóll",
+          "away": "Ármann",
+          "tipoff": "2026-02-13T19:00:00",
+          "status": "SCHEDULED"
+        },
+        {
+          "home": "Keflavík",
+          "away": "Grindavík",
+          "tipoff": "2026-02-13T19:30:00",
+          "status": "SCHEDULED"
+        },
+        {
+          "home": "ÍA",
+          "away": "Keflavík",
+          "tipoff": "2026-02-19T19:15:00",
+          "status": "SCHEDULED"
+        },
+        {
+          "home": "Grindavík",
+          "away": "ÍR",
+          "tipoff": "2026-02-19T19:15:00",
+          "status": "SCHEDULED"
+        },
+        {
+          "home": "Þór Þ.",
+          "away": "Tindastóll",
+          "tipoff": "2026-02-19T19:15:00",
+          "status": "SCHEDULED"
+        },
+        {
+          "home": "Njarðvík",
+          "away": "KR",
+          "tipoff": "2026-02-19T19:15:00",
+          "status": "SCHEDULED"
+        },
+        {
+          "home": "Ármann",
+          "away": "Stjarnan",
+          "tipoff": "2026-02-20T19:00:00",
+          "status": "SCHEDULED"
+        },
+        {
+          "home": "Álftanes",
+          "away": "Valur",
+          "tipoff": "2026-02-20T19:30:00",
+          "status": "SCHEDULED"
+        },
+        {
+          "home": "Stjarnan",
+          "away": "Þór Þ.",
+          "tipoff": "2026-03-06T19:15:00",
+          "status": "SCHEDULED"
+        },
+        {
+          "home": "ÍR",
+          "away": "ÍA",
+          "tipoff": "2026-03-06T19:15:00",
+          "status": "SCHEDULED"
+        },
+        {
+          "home": "Álftanes",
+          "away": "Keflavík",
+          "tipoff": "2026-03-06T19:15:00",
+          "status": "SCHEDULED"
+        },
+        {
+          "home": "Ármann",
+          "away": "Njarðvík",
+          "tipoff": "2026-03-06T19:15:00",
+          "status": "SCHEDULED"
+        },
+        {
+          "home": "Valur",
+          "away": "KR",
+          "tipoff": "2026-03-07T19:00:00",
+          "status": "SCHEDULED"
+        },
+        {
+          "home": "Tindastóll",
+          "away": "Grindavík",
+          "tipoff": "2026-03-07T19:30:00",
+          "status": "SCHEDULED"
+        },
+        {
+          "home": "Álftanes",
+          "away": "ÍR",
+          "tipoff": "2026-03-12T19:15:00",
+          "status": "SCHEDULED"
+        },
+        {
+          "home": "Þór Þ.",
+          "away": "Ármann",
+          "tipoff": "2026-03-12T19:15:00",
+          "status": "SCHEDULED"
+        },
+        {
+          "home": "Njarðvík",
+          "away": "Valur",
+          "tipoff": "2026-03-12T19:15:00",
+          "status": "SCHEDULED"
+        },
+        {
+          "home": "KR",
+          "away": "Keflavík",
+          "tipoff": "2026-03-12T19:15:00",
+          "status": "SCHEDULED"
+        },
+        {
+          "home": "ÍA",
+          "away": "Tindastóll",
+          "tipoff": "2026-03-13T19:00:00",
+          "status": "SCHEDULED"
+        },
+        {
+          "home": "Grindavík",
+          "away": "Stjarnan",
+          "tipoff": "2026-03-13T19:30:00",
+          "status": "SCHEDULED"
+        },
+        {
+          "home": "ÍR",
+          "away": "KR",
+          "tipoff": "2026-03-19T19:15:00",
+          "status": "SCHEDULED"
+        },
+        {
+          "home": "Þór Þ.",
+          "away": "Njarðvík",
+          "tipoff": "2026-03-19T19:15:00",
+          "status": "SCHEDULED"
+        },
+        {
+          "home": "Keflavík",
+          "away": "Valur",
+          "tipoff": "2026-03-19T19:15:00",
+          "status": "SCHEDULED"
+        },
+        {
+          "home": "Ármann",
+          "away": "Grindavík",
+          "tipoff": "2026-03-19T19:15:00",
+          "status": "SCHEDULED"
+        },
+        {
+          "home": "Stjarnan",
+          "away": "ÍA",
+          "tipoff": "2026-03-20T19:00:00",
+          "status": "SCHEDULED"
+        },
+        {
+          "home": "Tindastóll",
+          "away": "Álftanes",
+          "tipoff": "2026-03-20T19:30:00",
+          "status": "SCHEDULED"
+        },
+        {
+          "home": "Valur",
+          "away": "ÍR",
+          "tipoff": "2026-03-26T19:15:00",
+          "status": "SCHEDULED"
+        },
+        {
+          "home": "KR",
+          "away": "Tindastóll",
+          "tipoff": "2026-03-26T19:15:00",
+          "status": "SCHEDULED"
+        },
+        {
+          "home": "Álftanes",
+          "away": "Stjarnan",
+          "tipoff": "2026-03-26T19:15:00",
+          "status": "SCHEDULED"
+        },
+        {
+          "home": "ÍA",
+          "away": "Ármann",
+          "tipoff": "2026-03-26T19:15:00",
+          "status": "SCHEDULED"
+        },
+        {
+          "home": "Grindavík",
+          "away": "Þór Þ.",
+          "tipoff": "2026-03-26T19:15:00",
+          "status": "SCHEDULED"
+        },
+        {
+          "home": "Njarðvík",
+          "away": "Keflavík",
+          "tipoff": "2026-03-26T19:15:00",
+          "status": "SCHEDULED"
+        }
+      ]
+    }
+  ]
+}

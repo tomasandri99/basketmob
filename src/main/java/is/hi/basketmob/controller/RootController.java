@@ -1,8 +1,23 @@
-package is.hi.basketmob.web;
-import org.springframework.stereotype.Controller;
+package is.hi.basketmob.controller;
+
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
-@Controller
+import org.springframework.web.bind.annotation.RestController;
+
+import java.net.URI;
+
+/**
+ * Minimal redirect so folks can type /swagger without exposing any HTML templates.
+ */
+@RestController
 public class RootController {
-    @GetMapping("/")
-    public String index() { return "redirect:/swagger-ui/index.html"; }
+
+    @GetMapping("/swagger")
+    public ResponseEntity<Void> swagger() {
+        return ResponseEntity.status(HttpStatus.FOUND)
+                .header(HttpHeaders.LOCATION, "/swagger-ui/index.html")
+                .build();
+    }
 }

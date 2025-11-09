@@ -9,4 +9,5 @@ import java.util.Optional;
 public interface FavoriteRepository extends JpaRepository<Favorite, Long> {
     List<Favorite> findByUserId(Long userId);
     Optional<Favorite> findByUserIdAndTeamId(Long userId, Long teamId);
+    List<Favorite> findByTeamIdIn(List<Long> teamIds);
 }
