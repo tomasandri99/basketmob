@@ -6,7 +6,14 @@ import is.hi.basketmob.entity.User;
 public final class UserMapper {
     private UserMapper() {}
     public static UserResponse toResponse(User u) {
-        return new UserResponse(u.getId(), u.getEmail(), u.getDisplayName(), u.getAvatarUrl(), u.getGender());
+        return new UserResponse(
+                u.getId(),
+                u.getEmail(),
+                u.getDisplayName(),
+                u.getAvatarUrl(),
+                u.getGender(),
+                u.isAdmin()
+        );
     }
 }
 

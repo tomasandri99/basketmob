@@ -25,6 +25,9 @@ public class User {
     @Column(length = 20)
     private String gender; // e.g., male | female | other
 
+    @Column(nullable = false)
+    private boolean admin = false;
+
     @Column(nullable = false, columnDefinition = "timestamp")
     private OffsetDateTime createdAt = OffsetDateTime.now();
 
@@ -49,6 +52,9 @@ public class User {
 
     public String getGender() { return gender; }
     public void setGender(String gender) { this.gender = gender; }
+
+    public boolean isAdmin() { return admin; }
+    public void setAdmin(boolean admin) { this.admin = admin; }
 
     public OffsetDateTime getCreatedAt() { return createdAt; }
     public void setCreatedAt(OffsetDateTime createdAt) { this.createdAt = createdAt; }
