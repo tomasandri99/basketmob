@@ -23,11 +23,12 @@ public class Notification {
     @Column(nullable = false)
     private boolean readFlag = false;
 
-    @Column(nullable = false)
+    @Column(nullable = false, columnDefinition = "timestamp")
     private OffsetDateTime createdAt = OffsetDateTime.now();
 
-    public Notification() {}
-
+    public Notification() {
+    }
+ 
     public Notification(User user, Game game, String message) {
         this.user = user;
         this.game = game;

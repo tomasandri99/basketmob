@@ -38,7 +38,7 @@ public class FavoriteService {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "ALREADY_FAVORITED");
         }
         favorites.save(new Favorite(u, t));
-        return toTeamDto(t);
+        return toDto(t);
     }
 
     @Transactional
@@ -55,11 +55,11 @@ public class FavoriteService {
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "USER_NOT_FOUND"));
 
         return favorites.findByUserId(userId).stream()
-                .map(f -> toTeamDto(f.getTeam()))
+                .map(f -> toDto(f.getTeam()))
                 .collect(Collectors.toList());
     }
 
-    private TeamDto toTeamDto(Team team) {
+    private TeamDto toDto(Team team) {
         return new TeamDto(
                 team.getId(),
                 team.getName(),
