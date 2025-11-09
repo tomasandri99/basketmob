@@ -75,12 +75,6 @@ public class GameCommandService {
     }
 
     private TeamDto toTeamDto(Team team) {
-        return new TeamDto(
-                team.getId(),
-                team.getName(),
-                team.getShortName(),
-                team.getCity(),
-                team.getLogoUrl()
-        );
+        return new TeamDto(team.getId(), team.getName());
     }
 }

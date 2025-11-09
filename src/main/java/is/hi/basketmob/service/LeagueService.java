@@ -35,36 +35,73 @@ public class LeagueService implements StandingsProvider {
         }
 
         List<Team> leagueTeams = teams.findByLeagueId(leagueId);
-        Map<Long, Integer> win = new HashMap<>();
-        Map<Long, Integer> loss = new HashMap<>();
-        for (Team t : leagueTeams) {
-            win.put(t.getId(), 0);
-            loss.put(t.getId(), 0);
+        Map<Long, StandingAccumulator> stats = new HashMap<>();
+        for (Team team : leagueTeams) {
+            stats.put(team.getId(), new StandingAccumulator());
         }
 
         List<Game> finals = games.findByLeagueIdAndStatus(leagueId, Game.Status.FINAL);
-        for (Game g : finals) {
-            Integer hs = g.getHomeScore(), as = g.getAwayScore();
-            if (hs == null || as == null) continue;
-            Long hid = g.getHomeTeam().getId(), aid = g.getAwayTeam().getId();
-            if (hs > as) {
-                win.put(hid, win.get(hid) + 1);
-                loss.put(aid, loss.get(aid) + 1);
-            } else if (as > hs) {
-                win.put(aid, win.get(aid) + 1);
-                loss.put(hid, loss.get(hid) + 1);
+        for (Game game : finals) {
+            Integer homeScore = game.getHomeScore();
+            Integer awayScore = game.getAwayScore();
+            if (homeScore == null || awayScore == null) {
+                continue;
             }
+
+            StandingAccumulator home = stats.get(game.getHomeTeam().getId());
+            StandingAccumulator away = stats.get(game.getAwayTeam().getId());
+            if (home == null || away == null) {
+                continue;
+            }
+
+            home.recordGame(homeScore, awayScore, homeScore > awayScore);
+            away.recordGame(awayScore, homeScore, awayScore > homeScore);
         }
 
         List<StandingDto> rows = new ArrayList<>();
-        for (Team t : leagueTeams) {
-            rows.add(new StandingDto(t.getId(), t.getName(), win.get(t.getId()), loss.get(t.getId())));
+        for (Team team : leagueTeams) {
+            StandingAccumulator acc = stats.get(team.getId());
+            rows.add(new StandingDto(
+                    team.getId(),
+                    team.getName(),
+                    acc.wins,
+                    acc.losses,
+                    acc.gamesPlayed,
+                    acc.pointsFor,
+                    acc.pointsAgainst,
+                    acc.winPct()
+            ));
         }
 
-        rows.sort(Comparator.comparingInt((StandingDto s) -> s.wins).reversed()
-                .thenComparingInt(s -> s.losses)
-                .thenComparing(s -> s.teamName));
+        rows.sort(Comparator
+                .comparingDouble(StandingDto::winPct).reversed()
+                .thenComparingInt(dto -> dto.pointsFor() - dto.pointsAgainst()).reversed()
+                .thenComparingInt(StandingDto::pointsFor).reversed()
+                .thenComparing(StandingDto::teamName));
 
         return rows;
+    }
+
+    private static final class StandingAccumulator {
+        int wins = 0;
+        int losses = 0;
+        int gamesPlayed = 0;
+        int pointsFor = 0;
+        int pointsAgainst = 0;
+
+        void recordGame(int scored, int allowed, boolean win) {
+            gamesPlayed++;
+            pointsFor += scored;
+            pointsAgainst += allowed;
+            if (win) {
+                wins++;
+            } else {
+                losses++;
+            }
+        }
+
+        double winPct() {
+            return gamesPlayed == 0 ? 0d : (double) wins / gamesPlayed;
+        }
     }
 }
