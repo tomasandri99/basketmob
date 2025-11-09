@@ -1,36 +1,44 @@
 package is.hi.basketmob.controller;
 
 import is.hi.basketmob.dto.TeamDto;
+import is.hi.basketmob.security.AuthenticatedUser;
 import is.hi.basketmob.service.FavoriteService;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/v1/users")
+@RequestMapping("/api/v1/me/favorites")
 public class FavoriteController {
     private final FavoriteService favorites;
+
     public FavoriteController(FavoriteService favorites) {
         this.favorites = favorites;
     }
 
-    @GetMapping("/{userId}/favorites")
-    public ResponseEntity<List<TeamDto>> list(@PathVariable Long userId) {
-        return ResponseEntity.ok(favorites.list(userId));
+    @GetMapping
+    public ResponseEntity<List<TeamDto>> list(@AuthenticationPrincipal AuthenticatedUser actor) {
+        return ResponseEntity.ok(favorites.list(actor.getId()));
     }
 
-    // Use query param so you can do /api/v1/users/{id}/favorites?teamId=1
-    @PostMapping("/{userId}/favorites")
-    public ResponseEntity<TeamDto> follow(@PathVariable Long userId,
+    @PostMapping
+    public ResponseEntity<TeamDto> follow(@AuthenticationPrincipal AuthenticatedUser actor,
                                           @RequestParam Long teamId) {
-        return ResponseEntity.ok(favorites.follow(userId, teamId));
+        return ResponseEntity.ok(favorites.follow(actor.getId(), teamId));
     }
 
-    @DeleteMapping("/{userId}/favorites/{teamId}")
-    public ResponseEntity<Void> unfollow(@PathVariable Long userId,
+    @DeleteMapping("/{teamId}")
+    public ResponseEntity<Void> unfollow(@AuthenticationPrincipal AuthenticatedUser actor,
                                          @PathVariable Long teamId) {
-        favorites.unfollow(userId, teamId);
+        favorites.unfollow(actor.getId(), teamId);
         return ResponseEntity.noContent().build();
     }
 }
