@@ -6,48 +6,76 @@ import is.hi.basketmob.entity.Team;
 import is.hi.basketmob.repository.GameRepository;
 import is.hi.basketmob.repository.LeagueRepository;
 import is.hi.basketmob.repository.TeamRepository;
-import org.springframework.context.annotation.Configuration;
+import is.hi.basketmob.seed.GameSeed;
+import is.hi.basketmob.seed.LeagueDataClient;
+import is.hi.basketmob.seed.LeagueSeed;
+import is.hi.basketmob.seed.TeamSeed;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Configuration
 public class SeedConfig {
+
     @Bean
-    CommandLineRunner seed(LeagueRepository leagues, TeamRepository teams, GameRepository games) {
+    CommandLineRunner seedLeagues(LeagueRepository leagues,
+                                 TeamRepository teams,
+                                 GameRepository games,
+                                 LeagueDataClient dataClient) {
         return args -> {
-            if (leagues.count() > 0L) return; // already seeded
+            if (leagues.count() > 0L) {
+                return;
+            }
 
-            League l = new League();
-            l.setName("Dominos League");
-            l.setSeason("2025");
-            l = leagues.save(l);
+            List<LeagueSeed> seedData = dataClient.loadLeagues();
+            for (LeagueSeed leagueSeed : seedData) {
+                League league = new League();
+                league.setName(leagueSeed.getName());
+                league.setSeason(leagueSeed.getSeason());
+                league = leagues.save(league);
 
-            Team kef = new Team(); kef.setName("Keflavík"); kef.setLeague(l);
-            Team val = new Team(); val.setName("Valur");    val.setLeague(l);
-            Team kr  = new Team(); kr.setName("KR");        kr.setLeague(l);
-            Team hau = new Team(); hau.setName("Haukar");   hau.setLeague(l);
-            teams.saveAll(List.of(kef, val, kr, hau));
+                Map<String, Team> teamLookup = new HashMap<>();
+                List<Team> teamEntities = new ArrayList<>();
+                for (TeamSeed teamSeed : leagueSeed.getTeams()) {
+                    Team team = new Team();
+                    team.setName(teamSeed.getName());
+                    team.setShortName(teamSeed.getShortName());
+                    team.setCity(teamSeed.getCity());
+                    team.setLogoUrl(teamSeed.getLogo());
+                    team.setLeague(league);
+                    teamEntities.add(team);
+                    teamLookup.put(team.getName(), team);
+                }
+                teams.saveAll(teamEntities);
 
-            Game g1 = new Game();
-            g1.setLeague(l);
-            g1.setHomeTeam(kef);
-            g1.setAwayTeam(val);
-            g1.setTipoff(LocalDateTime.now().minusDays(1).withHour(19).withMinute(15));
-            g1.setStatus(Game.Status.FINAL);
-            g1.setHomeScore(88);
-            g1.setAwayScore(81);
-
-            Game g2 = new Game();
-            g2.setLeague(l);
-            g2.setHomeTeam(kr);
-            g2.setAwayTeam(hau);
-            g2.setTipoff(LocalDateTime.now().withHour(20).withMinute(0));
-            g2.setStatus(Game.Status.SCHEDULED);
-
-            games.saveAll(List.of(g1, g2));
+                List<Game> gameEntities = new ArrayList<>();
+                for (GameSeed gameSeed : leagueSeed.getGames()) {
+                    Game game = new Game();
+                    game.setLeague(league);
+                    game.setHomeTeam(requireTeam(teamLookup, gameSeed.getHome()));
+                    game.setAwayTeam(requireTeam(teamLookup, gameSeed.getAway()));
+                    game.setTipoff(LocalDateTime.parse(gameSeed.getTipoff()));
+                    game.setStatus(Game.Status.valueOf(gameSeed.getStatus()));
+                    game.setHomeScore(gameSeed.getHomeScore());
+                    game.setAwayScore(gameSeed.getAwayScore());
+                    gameEntities.add(game);
+                }
+                games.saveAll(gameEntities);
+            }
         };
+    }
+
+    private Team requireTeam(Map<String, Team> teams, String name) {
+        Team team = teams.get(name);
+        if (team == null) {
+            throw new IllegalStateException("Unknown team referenced in seed data: " + name);
+        }
+        return team;
     }
 }
