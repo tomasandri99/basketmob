@@ -52,7 +52,7 @@ public class UserController {
     @PatchMapping("/{id}")
     public ResponseEntity<UserResponse> patchUpdate(
             @PathVariable Long id,
-            @RequestBody UserUpdateRequest body,
+            @Valid @RequestBody UserUpdateRequest body,
             @AuthenticationPrincipal AuthenticatedUser actor
     ) {
         return ResponseEntity.ok(
@@ -82,7 +82,7 @@ public class UserController {
     }
 
     @PatchMapping("/me")
-    public ResponseEntity<UserResponse> patchMe(@RequestBody UserUpdateRequest body,
+    public ResponseEntity<UserResponse> patchMe(@Valid @RequestBody UserUpdateRequest body,
                                                 @AuthenticationPrincipal AuthenticatedUser actor) {
         return ResponseEntity.ok(
                 UserMapper.toResponse(userService.updateUser(actor.getId(), body, actor.getId(), actor.isAdmin(), false))

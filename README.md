@@ -1,23 +1,24 @@
 # BasketMob
 
-BasketMob is a Spring Boot REST API and lightweight Thymeleaf UI that serves Icelandic basketball fixtures, standings, search, and personalized notifications. It is built for the HBV501G Software Project course (Construction II deliverables).
+BasketMob is a Spring Boot REST API for Icelandic basketball fixtures, standings, global search, and personalized notifications. It powers the HBV501G Software Project deliverables without any server-side HTML.
 
 ## Features
 
-- Pre-seeded Dominos League 2025–2026 schedule (fixtures, standings, teams, scores).
-- Advanced fixtures endpoint with pagination, additive date filters, league/status filters, and cached responses.
-- Detailed game payloads with enriched team metadata and stale flags for stub mode.
-- Secure user management (`POST /api/v1/users`, profile CRUD, password change) plus auth tokens with logout.
-- Favorites + notifications flow: follow teams, get alerts when an admin finalizes a game, view/clear notifications.
-- Search endpoint that returns top team and game hits for a query.
-- Minimal dashboard/fixtures/standings views rendered with Thymeleaf for in-class demos.
-- Course alignment checklists in `checks/` for A3/A4 and course-wide requirements.
+- Real 2025–2026 Bónus deild karla dataset (`src/main/resources/data/dominos-2025.json`) with scores for completed games and future fixtures for the rest of the season.
+- Advanced fixtures endpoint with pagination, additive date filters (`date`, `dateFrom`, `dateTo`), league/status filters, caching, and ISO-8601 timestamps.
+- Detailed game payloads, computed standings, and a search API covering teams plus games.
+- Secure account management: register, login/logout, profile PUT/PATCH/DELETE, and token-based auth.
+- Favorites + notifications flow (follow/unfollow teams, mark notifications read, clear inbox).
+- Admin-only finalize endpoint to lock scores and push notifications.
+- Configurable rate limiting (`basketmob.rate-limit.*`) enforced by `RateLimitFilter` with integration coverage.
+- Swagger/OpenAPI exposed at `/swagger` (redirect to `/swagger-ui/index.html`) and `/v3/api-docs`.
+- Reproducible smoke script (`scripts/smoke-all.ps1`) that drives every endpoint end-to-end.
 
 ## Requirements
 
 - Java 17
-- Maven 3.8+ (the repo ships with `mvnw`)
-- H2 (embedded) for dev/test – no external DB needed
+- Maven 3.8+ (wrapper included)
+- No external database — H2 in-memory is used for dev/test
 
 ## Running locally
 
@@ -27,63 +28,75 @@ cd basketmob
 ./mvnw spring-boot:run
 ```
 
-The app starts on <http://localhost:8080>. Useful URLs:
+The service listens on <http://localhost:8080>.
 
-- Swagger UI: <http://localhost:8080/swagger-ui/index.html>
-- Thymeleaf UI: `/`, `/games`, `/standings`, `/dashboard`
-- H2 console: <http://localhost:8080/h2-console> (JDBC `jdbc:h2:mem:bm`, user `sa`, blank password)
+- Swagger UI: <http://localhost:8080/swagger>
+- OpenAPI JSON: <http://localhost:8080/v3/api-docs>
+- H2 console: <http://localhost:8080/h2-console> (JDBC URL `jdbc:h2:mem:bm`, user `sa`, blank password)
 
-### Seed data & accounts
+### Seed data & built-in accounts
 
-- The JSON schedule at `src/main/resources/data/dominos-2025.json` seeds leagues, teams (with city/short name/logo), and fixtures on startup (`SeedConfig` + `LeagueDataClient`). Delete the H2 file or restart the process to reseed.
-- A dev user is bootstrapped via `DevData`: `tomas@example.com` / `Password123!`
-- The first user you register (via UI or `POST /api/v1/users`) becomes an admin by default.
+- `SeedConfig` loads `src/main/resources/data/dominos-2025.json` on startup. Restarting the app resets the league, teams, and fixtures to match that dataset.
+- `DevData` injects two helper accounts:
+  - `tomas@example.com / Password123!` (standard user)
+  - `admin@basketmob.is / Admin123!` (ROLE_ADMIN, used for `/api/v1/admin/games/{id}`)
+- `scripts/smoke-all.ps1` spins up two disposable users, exercises every endpoint, and deletes them. Run it with `pwsh ./scripts/smoke-all.ps1` once the app is running.
+
+### Rate limit configuration
+
+`RateLimitFilter` guards all `/api/**` routes. Defaults live in `src/main/resources/application.properties`:
+
+```properties
+basketmob.rate-limit.enabled=true
+basketmob.rate-limit.limit=120
+basketmob.rate-limit.window=PT1M
+```
+
+Override them via system properties or environment variables, e.g. `./mvnw spring-boot:run -Dbasketmob.rate-limit.limit=60`.
 
 ## Testing & CI
-
-Run the JUnit suite locally:
 
 ```bash
 ./mvnw -q test
 ```
 
-GitHub Actions (`.github/workflows/build.yml`) runs the same command on every push/PR, so please keep tests green.
+Tests cover service layers plus the rate-limiting filter. GitHub Actions (see `.github/workflows/build.yml`) runs the same command on every push/PR.
 
 ## Key endpoints
 
 | Method | Path | Description |
 | --- | --- | --- |
-| `POST` | `/api/v1/users` | Register a new user (validated, returns 201 + body) |
-| `POST` | `/api/v1/auth/login` | Password login; returns bearer token + user info |
-| `POST` | `/api/v1/auth/logout` | Revokes token (header/cookie) and clears auth cookie |
-| `GET` | `/api/v1/games` | Fixtures list with pagination + optional `date`, `dateFrom`, `dateTo`, `leagueId`, `status` filters |
-| `GET` | `/api/v1/games/{id}` | Detailed game payload (teams, status, league, stale flag) |
-| `GET` | `/api/v1/leagues/{id}/standings?season=` | Computed standings with wins/losses/points and cached proxy |
-| `GET` | `/api/v1/search?q=` | Search teams + games (top 5–25 matches) |
-| `GET/POST/DELETE` | `/api/v1/me/favorites` | List/follow/unfollow teams (auth required, idempotent) |
-| `GET/POST/DELETE` | `/api/v1/me/notifications` | List, mark read, and clear notifications |
-| `POST` | `/api/v1/admin/games/{id}/finalize` | Admin-only score update + notification fan-out |
-| `GET/PUT/PATCH/DELETE` | `/api/v1/users/{id}`, `/api/v1/users/me` | Full profile management with ownership enforcement |
+| `POST` | `/api/v1/users` | Register a user |
+| `POST` | `/api/v1/auth/login` | Exchange credentials for a bearer token |
+| `POST` | `/api/v1/auth/logout` | Invalidate the current token |
+| `GET` | `/api/v1/games` | Fixtures (pagination, sort, additive filters) |
+| `GET` | `/api/v1/games/{id}` | Detailed game payload |
+| `GET` | `/api/v1/leagues/{id}/standings?season=` | Computed standings |
+| `GET` | `/api/v1/search?q=` | Global search |
+| `GET/POST/DELETE` | `/api/v1/me/favorites` | List/follow/unfollow teams |
+| `GET/POST/DELETE` | `/api/v1/me/notifications` | List, mark read, clear notifications |
+| `PATCH` | `/api/v1/admin/games/{id}` | Admin-only status/score update (triggers notifications) |
+| `GET/PUT/PATCH/DELETE` | `/api/v1/users/{id}` & `/api/v1/users/me` | Full profile management |
 
-The OpenAPI doc in Swagger lists every available response schema.
+Swagger lists every response schema and error shape.
 
-## Frontend preview
+## Acceptance checklist / smoke test
 
-The `/games`, `/standings`, and `/dashboard` Thymeleaf pages call the REST API using Fetch, so instructors can demo the project without Postman:
+[`docs/acceptance.md`](docs/acceptance.md) documents the instructor scenarios. TL;DR:
 
-- `/games` applies filters and renders the `/api/v1/games` response.
-- `/standings` fetches `/api/v1/leagues/{id}/standings` and builds a table.
-- `/dashboard` shows the authenticated user’s favorites and notifications.
+```powershell
+pwsh ./scripts/smoke-all.ps1
+```
+
+The script registers two accounts, runs through auth, fixtures, standings, search, favorites/notifications, admin finalize, and the delete flows. It fails fast if any endpoint deviates from the expected 2xx/204 responses.
 
 ## Course checklists
 
-Two machine-readable checklists live in `checks/`:
+Machine-readable progress trackers live in `checks/`:
 
-- `a3_a4_checklist.json` – Construction I/II scope, acceptance matrix, and autotest hints.
-- `course_wide_requirements.json` – Global HBV501G expectations (endpoint types, UP phases, Git workflow).
-
-You can point an automation agent to these files to verify criteria or to spin up API smoke tests.
+- `a3_a4_checklist.json` – Construction I & II requirements
+- `course_wide_requirements.json` – global HBV501G requirements (endpoint types, sprint cadence, etc.)
 
 ## Contributing
 
-The repo now works off the `part4_aok` branch; all feature branches have been merged. Feel free to create short-lived branches for bug fixes, but please run `./mvnw test` before pushing and include Tomas (`@tomasandri99`) in every PR so both contributors are credited.​
+Development happens on `part4_aok`. Create short-lived feature branches, run `./mvnw test`, and tag Tomas (`@tomasandri99`) in pull requests so both contributors receive credit.

@@ -34,17 +34,8 @@ public class SecurityConfig {
                                 "/api/v1/auth/**",
                                 "/api/v1/users",
                                 "/swagger-ui/**",
+                                "/swagger",
                                 "/v3/api-docs/**",
-                                "/",
-                                "/index",
-                                "/games",
-                                "/standings",
-                                "/login",
-                                "/register",
-                                "/favorites",
-                                "/css/**",
-                                "/js/**",
-                                "/images/**",
                                 "/favicon.ico"
                         ).permitAll()
                         .antMatchers(HttpMethod.GET, "/api/v1/games/**", "/api/v1/standings/**", "/api/v1/leagues/**", "/api/v1/search/**").permitAll()

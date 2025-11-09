@@ -5,6 +5,7 @@ import is.hi.basketmob.security.AuthenticatedUser;
 import is.hi.basketmob.service.NotificationService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -14,8 +15,11 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
+import javax.validation.constraints.Positive;
+
 @RestController
 @RequestMapping("/api/v1/me/notifications")
+@Validated
 public class NotificationController {
 
     private final NotificationService notifications;
@@ -31,7 +35,7 @@ public class NotificationController {
 
     @PostMapping("/{id}/read")
     public ResponseEntity<Void> markRead(@AuthenticationPrincipal AuthenticatedUser actor,
-                                         @PathVariable Long id) {
+                                         @PathVariable @Positive Long id) {
         notifications.markRead(actor.getId(), id);
         return ResponseEntity.noContent().build();
     }
