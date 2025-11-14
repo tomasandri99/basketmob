@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>BasketMob · Leikir</title>
+    <link rel="stylesheet" th:href="@{/css/styles.css}">
+</head>
+<body>
+<header th:replace="fragments/nav :: siteNav"></header>
+<div th:replace="fragments/nav :: alerts"></div>
+
+<main class="container">
+    <section class="filter-bar">
+        <form method="get" action="#" class="filter-form">
+            <label for="date">Dagsetning</label>
+            <input type="date" id="date" name="date" th:value="${selectedDate}">
+            <button type="submit" class="btn primary">Sækja</button>
+        </form>
+    </section>
+
+    <section>
+        <h2 th:text="'Leikir ' + ${selectedDate}"></h2>
+        <p th:if="${games.isEmpty()}">Engir leikir fundust á þessari dagsetningu.</p>
+        <div class="card-grid" th:if="${!games.isEmpty()}">
+            <article class="game-card detailed" th:each="game : ${games}">
+                <header>
+                    <span class="game-time" th:text="${game.tipoff()}"></span>
+                    <span class="status badge" th:text="${game.status()}"></span>
+                </header>
+                <div class="game-teams">
+                    <strong th:text="${game.homeName()}"></strong>
+                    <span>vs</span>
+                    <strong th:text="${game.awayName()}"></strong>
+                </div>
+            </article>
+        </div>
+    </section>
+</main>
+
+<footer class="site-footer">
+    <div class="container">
+        <span>Gögn byggja á nýjustu seed skrá.</span>
+    </div>
+</footer>
+</body>
+</html>

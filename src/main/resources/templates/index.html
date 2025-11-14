@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>BasketMob · Heim</title>
+    <link rel="stylesheet" th:href="@{/css/styles.css}">
+</head>
+<body>
+<header th:replace="fragments/nav :: siteNav"></header>
+<div th:replace="fragments/nav :: alerts"></div>
+
+<main class="container">
+    <section class="hero">
+        <div>
+            <h2>Allt um íslenska körfuboltann á einum stað.</h2>
+            <p>Staðan, úrslit og dagskrá í Bónus deild karla 2025-2026.</p>
+            <div class="hero-actions">
+                <a th:href="@{/games}" class="btn primary">Skoða leiki</a>
+                <a th:href="@{/standings}" class="btn secondary">Skoða stöðuna</a>
+                <a th:if="${currentUser == null}" th:href="@{/register}" class="btn tertiary">Búa til aðgang</a>
+                <a th:if="${currentUser != null}" th:href="@{/dashboard}" class="btn tertiary">Mín síða</a>
+            </div>
+        </div>
+    </section>
+
+    <section>
+        <h3 th:text="'Leikir ' + ${today}"></h3>
+        <p th:if="${games.isEmpty()}">Engir leikir á dagskrá í dag.</p>
+        <div class="card-grid" th:if="${!games.isEmpty()}">
+            <article class="game-card" th:each="game : ${games}">
+                <span class="game-time" th:text="${game.tipoff()}"></span>
+                <div class="game-teams">
+                    <span th:text="${game.homeName()}"></span>
+                    <span class="status" th:text="${game.status()}"></span>
+                    <span th:text="${game.awayName()}"></span>
+                </div>
+            </article>
+        </div>
+    </section>
+
+    <section th:if="${featuredLeague != null}">
+        <h3 th:text="${featuredLeague.name} + ' · ' + ${featuredLeague.season}"></h3>
+        <div class="standings-table-wrapper">
+            <table>
+                <thead>
+                <tr>
+                    <th>Lið</th>
+                    <th>Sig.</th>
+                    <th>Tap</th>
+                    <th>PF</th>
+                    <th>PA</th>
+                    <th>Hlutfall</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="row : ${featuredStandings}">
+                    <td th:text="${row.teamName()}"></td>
+                    <td th:text="${row.wins()}"></td>
+                    <td th:text="${row.losses()}"></td>
+                    <td th:text="${row.pointsFor()}"></td>
+                    <td th:text="${row.pointsAgainst()}"></td>
+                    <td th:text="${#numbers.formatDecimal(row.winPct()*100, 1, 1)} + '%'"></td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </section>
+</main>
+
+<footer class="site-footer">
+    <div class="container">
+        <span>© 2025 BasketMob</span>
+    </div>
+</footer>
+</body>
+</html>

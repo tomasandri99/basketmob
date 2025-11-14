@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<body>
+<header class="site-header" th:fragment="siteNav">
+    <div class="container nav-grid">
+        <a class="logo" th:href="@{/}">BasketMob</a>
+        <nav>
+            <a th:href="@{/}">Heim</a>
+            <a th:href="@{/games}">Leikir</a>
+            <a th:href="@{/standings}">Staðan</a>
+            <a th:if="${currentUser != null}" th:href="@{/dashboard}">Mín síða</a>
+        </nav>
+        <div class="auth-controls">
+            <div th:if="${currentUser == null}">
+                <a class="btn secondary" th:href="@{/login}">Innskrá</a>
+                <a class="btn primary" th:href="@{/register}">Nýskráning</a>
+            </div>
+            <div th:if="${currentUser != null}" class="user-chip">
+                <span class="chip-label" th:text="${currentUser.username}"></span>
+                <form method="post" th:action="@{/logout}">
+                    <button type="submit" class="link-btn">Útskrá</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</header>
+
+<div class="flash-container" th:fragment="alerts">
+    <div class="flash flash-success" th:if="${toast != null}" th:text="${toast}"></div>
+    <div class="flash flash-error" th:if="${error != null}" th:text="${error}"></div>
+</div>
+</body>
+</html>

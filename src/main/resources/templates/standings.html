@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>BasketMob · Staðan</title>
+    <link rel="stylesheet" th:href="@{/css/styles.css}">
+</head>
+<body>
+<header th:replace="fragments/nav :: siteNav"></header>
+<div th:replace="fragments/nav :: alerts"></div>
+
+<main class="container">
+    <section class="filter-bar">
+        <form method="get" action="#" class="filter-form">
+            <label for="league">Deild</label>
+            <select id="league" name="leagueId">
+                <option th:each="league : ${leagues}"
+                        th:value="${league.id}"
+                        th:selected="${selectedLeague != null and league.id == selectedLeague.id}"
+                        th:text="${league.name} + ' ' + league.season">
+                </option>
+            </select>
+            <button type="submit" class="btn primary">Sýna</button>
+        </form>
+    </section>
+
+    <section th:if="${selectedLeague == null}">
+        <p>Engin deild hefur verið skilgreind ennþá.</p>
+    </section>
+
+    <section th:if="${selectedLeague != null}">
+        <h2 th:text="${selectedLeague.name} + ' · ' + ${selectedLeague.season}"></h2>
+        <div class="standings-table-wrapper">
+            <table>
+                <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Lið</th>
+                    <th>Sig.</th>
+                    <th>Tap</th>
+                    <th>Leikir</th>
+                    <th>PF</th>
+                    <th>PA</th>
+                    <th>Hlutfall</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="row,iter : ${standings}">
+                    <td th:text="${iter.index + 1}"></td>
+                    <td th:text="${row.teamName()}"></td>
+                    <td th:text="${row.wins()}"></td>
+                    <td th:text="${row.losses()}"></td>
+                    <td th:text="${row.gamesPlayed()}"></td>
+                    <td th:text="${row.pointsFor()}"></td>
+                    <td th:text="${row.pointsAgainst()}"></td>
+                    <td th:text="${#numbers.formatDecimal(row.winPct()*100, 1, 1)} + '%'"></td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </section>
+</main>
+
+<footer class="site-footer">
+    <div class="container">
+        <span>© 2025 BasketMob</span>
+    </div>
+</footer>
+</body>
+</html>
